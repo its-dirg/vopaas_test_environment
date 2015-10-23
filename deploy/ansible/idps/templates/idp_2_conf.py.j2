@@ -1,0 +1,178 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from saml2 import BINDING_HTTP_REDIRECT, BINDING_URI
+from saml2 import BINDING_HTTP_ARTIFACT
+from saml2 import BINDING_HTTP_POST
+from saml2 import BINDING_SOAP
+from saml2.saml import NAME_FORMAT_URI
+from saml2.saml import NAMEID_FORMAT_TRANSIENT
+from saml2.saml import NAMEID_FORMAT_PERSISTENT
+import os.path
+
+try:
+    from saml2.sigver import get_xmlsec_binary
+except ImportError:
+    get_xmlsec_binary = None
+
+if get_xmlsec_binary:
+    xmlsec_path = get_xmlsec_binary(["/opt/local/bin","/usr/local/bin"])
+else:
+    xmlsec_path = '/usr/local/bin/xmlsec1'
+
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+
+
+def full_path(local_file):
+    return os.path.join(BASEDIR, local_file)
+
+HOST = "0.0.0.0"
+PORT = {{ idp_2_port }}
+
+HTTPS = False
+
+if HTTPS:
+    BASE = "https://%s:%s" % (HOST, PORT)
+else:
+    BASE = "http://%s:%s" % (HOST, PORT)
+
+# HTTPS cert information
+SERVER_CERT = "pki/mycert.pem"
+SERVER_KEY = "pki/mykey.pem"
+CERT_CHAIN = ""
+
+CONFIG = {
+    "entityid": "%s/idp2.xml" % BASE,
+    "valid_for": 168,
+    "service": {
+        "aa": {
+            "endpoints": {
+                "attribute_service": [
+                    ("%s/attr" % BASE, BINDING_SOAP)
+                ]
+            },
+            "name_id_format": [NAMEID_FORMAT_TRANSIENT,
+                               NAMEID_FORMAT_PERSISTENT]
+        },
+        "aq": {
+            "endpoints": {
+                "authn_query_service": [
+                    ("%s/aqs" % BASE, BINDING_SOAP)
+                ]
+            },
+        },
+        "idp": {
+            "name": "Rolands IdP",
+            "endpoints": {
+                "single_sign_on_service": [
+                    ("%s/sso/redirect" % BASE, BINDING_HTTP_REDIRECT),
+                    ("%s/sso/post" % BASE, BINDING_HTTP_POST),
+                    ("%s/sso/art" % BASE, BINDING_HTTP_ARTIFACT),
+                    ("%s/sso/ecp" % BASE, BINDING_SOAP)
+                ],
+                "single_logout_service": [
+                    ("%s/slo/soap" % BASE, BINDING_SOAP),
+                    ("%s/slo/post" % BASE, BINDING_HTTP_POST),
+                    ("%s/slo/redirect" % BASE, BINDING_HTTP_REDIRECT)
+                ],
+                "artifact_resolve_service": [
+                    ("%s/ars" % BASE, BINDING_SOAP)
+                ],
+                "assertion_id_request_service": [
+                    ("%s/airs" % BASE, BINDING_URI)
+                ],
+                "manage_name_id_service": [
+                    ("%s/mni/soap" % BASE, BINDING_SOAP),
+                    ("%s/mni/post" % BASE, BINDING_HTTP_POST),
+                    ("%s/mni/redirect" % BASE, BINDING_HTTP_REDIRECT),
+                    ("%s/mni/art" % BASE, BINDING_HTTP_ARTIFACT)
+                ],
+                "name_id_mapping_service": [
+                    ("%s/nim" % BASE, BINDING_SOAP),
+                ],
+            },
+            "ui_info": {
+                "display_name": [
+                    {
+                        "text": "My IDP NO.2",
+                        "lang": "en"
+                    }
+                ],
+                "description": [
+                    {
+                        "text": "Local test instance NO. 2",
+                        "lang": "en"
+                    }
+                ],
+                "logo": [
+                    {
+                        "text": "data:image/jpeg;base64,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",
+                        "width": "120",
+                        "height": "60",
+                        "lang": "en"
+
+                    }
+                ],
+            },
+            "policy": {
+                "default": {
+                    "lifetime": {"minutes": 15},
+                    "attribute_restrictions": None, # means all I have
+                    "name_form": NAME_FORMAT_URI,
+                    "entity_categories": ["swamid", "edugain"]
+                },
+            },
+            "subject_data": "./idp.subject",
+            "name_id_format": [NAMEID_FORMAT_TRANSIENT,
+                               NAMEID_FORMAT_PERSISTENT]
+        },
+    },
+    "debug": 1,
+    "key_file": full_path("pki/mykey.pem"),
+    "cert_file": full_path("pki/mycert.pem"),
+    "metadata": {
+        "remote": [{ "url":"http://localhost:9090/role/sp.xml", "cert": None}],
+    },
+    "organization": {
+        "display_name": [("Rolands Identiteter v2", "en")],
+        "name": [("Rolands Identiteter v2", "se"), ("Rolands Identities v2", "en")],
+        "url": [("http://www.example.com", "en"), ("http://www.example.se", "se")],
+    },
+    "contact_person": [
+        {
+            "contact_type": "technical",
+            "given_name": "Roland",
+            "sur_name": "Hedberg",
+            "email_address": ["technical@example.com", "support@example.com"],
+
+        }, {
+            "contact_type": "support",
+            "given_name": "Support",
+            "email_address": "support@example.com"
+        },
+    ],
+    # This database holds the map between a subject's local identifier and
+    # the identifier returned to a SP
+    "xmlsec_binary": xmlsec_path,
+    #"attribute_map_dir": "../attributemaps",
+    "logger": {
+        "rotating": {
+            "filename": "idp.log",
+            "maxBytes": 500000,
+            "backupCount": 5,
+        },
+        "loglevel": "debug",
+    }
+}
+
+# Authentication contexts
+
+    #(r'verify?(.*)$', do_verify),
+
+CAS_SERVER = "https://cas.umu.se"
+CAS_VERIFY = "%s/verify_cas" % BASE
+PWD_VERIFY = "%s/verify_pwd" % BASE
+
+AUTHORIZATION = {
+    "CAS" : {"ACR": "CAS", "WEIGHT": 1, "URL": CAS_VERIFY},
+    "UserPassword" : {"ACR": "PASSWORD", "WEIGHT": 2, "URL": PWD_VERIFY}
+}

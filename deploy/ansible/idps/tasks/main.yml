@@ -1,0 +1,62 @@
+- name: fetch pysaml2 from github if it does not exist
+  git:
+    repo=https://github.com/its-dirg/pysaml2
+    dest={{ pysaml2_dir }}
+    version=a001e0e7a3b9824096e284e409b8880bb83d4c5e
+    clone=no
+    force=yes
+
+- name: Overwrite idp_1_conf.py
+  template:
+    src=idp_1_conf.py.j2
+    dest={{ idp_dir }}/idp_1_conf.py
+
+- name: Overwrite idp_2_conf.py
+  template:
+    src=idp_2_conf.py.j2
+    dest={{ idp_dir }}/idp_2_conf.py
+
+- name: install python-dev
+  apt:
+    name=python-dev
+
+- name: install libldap2-dev
+  apt:
+    name=libldap2-dev
+
+- name: install  libsasl2-dev
+  apt:
+    name=libsasl2-dev
+
+- name: install libssl-dev
+  apt:
+    name=libssl-dev
+
+- name: install python-ldap
+  pip:
+    name=python-ldap
+
+- name: generate metadata for idp_1
+  shell:
+    make_metadata.py idp_1_conf.py > {{ pyff_metadata_dir }}/idp_1.xml
+    chdir={{ idp_dir }}
+
+- name: generate metadata for idp_2
+  shell:
+    make_metadata.py idp_2_conf.py > {{ pyff_metadata_dir }}/idp_2.xml
+    chdir={{ idp_dir }}
+
+- name: kill idps
+  script: kill_idps.sh
+
+- name: starting IDP 1
+  shell:
+    nohup python idp.py idp_1_conf &
+    chdir={{ idp_dir }}
+  poll: 0
+
+- name: starting IDP 2
+  shell:
+    nohup python idp.py idp_2_conf &
+    chdir={{ idp_dir }}
+  poll: 0

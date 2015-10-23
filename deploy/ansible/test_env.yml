@@ -2,6 +2,9 @@
 
   vars:
     home_dir: "/home/vagrant"
+    pysaml2_dir: "{{ home_dir }}/pysaml2"
+    pyff_dir: "{{ home_dir }}/pyff"
+    pyff_metadata_dir: "{{ pyff_dir }}/metadata"
     metadata_dir: "{{ home_dir }}/metadata"
     host: "http://localhost"
     pyff_port: "9090"
@@ -12,10 +15,47 @@
     idp_2_port: "9089"
     saas_port: "9091"
     sp_metadata: "{{ home_dir }}/pysaml2/example/sp-wsgi/sp.xml"
+    cert_dir: "{{ home_dir }}/certs"
+    cert_server_dir: "{{ cert_dir }}/server"
+    cert_frontend_dir: "{{ cert_dir }}/frontend"
+    cert_backend_dir: "{{ cert_dir }}/backend"
+    server_cert: "{{ cert_server_dir }}/localhost.crt"
+    server_key: "{{ cert_server_dir }}/localhost.key"
+    frontend_cert: "{{ cert_frontend_dir }}/localhost.crt"
+    frontend_key: "{{ cert_frontend_dir }}/localhost.key"
+    backend_cert: "{{ cert_backend_dir }}/localhost.crt"
+    backend_key: "{{ cert_backend_dir }}/localhost.key"
+    pyoidc_dir: "{{ home_dir }}/pyoidc"
+    op_dir: "{{ pyoidc_dir }}/pyoidc/oidc_example/op2"
+
+  pre_tasks:
+    - name: create directory for certs
+      file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
+    - name: create directory for server certs
+      file: path={{ cert_server_dir }} state=directory owner=vagrant group=vagrant mode=0755
+    - name: create directory for frontend certs
+      file: path={{ cert_frontend_dir }} state=directory owner=vagrant group=vagrant mode=0755
+    - name: create directory for backend certs
+      file: path={{ cert_backend_dir }} state=directory owner=vagrant group=vagrant mode=0755
+    - name: copy localhost cert
+      copy: src=localhost.crt dest={{ server_cert }} owner=vagrant group=vagrant mode=0755
+    - name: copy localhost private key
+      copy: src=localhost.key dest={{ server_key }} owner=vagrant group=vagrant mode=0755
+    - name: copy localhost cert
+      copy: src=localhost.crt dest={{ frontend_cert }} owner=vagrant group=vagrant mode=0755
+    - name: copy localhost private key
+      copy: src=localhost.key dest={{ frontend_key }} owner=vagrant group=vagrant mode=0755
+    - name: copy localhost cert
+      copy: src=localhost.crt dest={{ backend_cert }} owner=vagrant group=vagrant mode=0755
+    - name: copy localhost private key
+      copy: src=localhost.key dest={{ backend_key }} owner=vagrant group=vagrant mode=0755
 
   roles:
     - {role: pyff, sudo: yes}
     - {role: saas_proxy, sudo: yes}
     - {role: sp, sudo: yes}
+    - {role: idps, sudo: yes}
+    - {role: integration_test, sudo: yes}
+    - {role: op, sudo: yes}
 
 

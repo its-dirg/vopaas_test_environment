@@ -1,0 +1,77 @@
+- name: install selenium
+  pip:
+    name=selenium
+
+- name: install pytest
+  pip:
+    name=pytest
+
+- name: update apt-get
+  apt:
+    update_cache=yes
+
+- name: install build-essential
+  apt:
+    name=build-essential
+
+- name: install chrpath
+  apt:
+    name=chrpath
+
+- name: install libssl-dev
+  apt:
+    name=libssl-dev
+
+- name: install libxft-dev
+  apt:
+    name=libxft-dev
+
+- name: install libfreetype6
+  apt:
+    name=libfreetype6
+
+- name: install libfreetype6-dev
+  apt:
+    name=libfreetype6-dev
+
+- name: install libfontconfig1
+  apt:
+    name=libfontconfig1
+
+- name: install libfontconfig1-dev
+  apt:
+    name=libfontconfig1-dev
+
+- name: Download phantomjs from bitbucket
+  shell:
+    wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
+    chdir={{ home_dir }}
+
+- name: Extract tar file
+  shell:
+    tar xvjf phantomjs-1.9.8-linux-x86_64.tar.bz2
+    chdir={{ home_dir }}
+
+- name: Copy phantomjs
+  command: cp -r phantomjs-1.9.8-linux-x86_64 /usr/local/share
+  with_items: dirs
+
+- name: Create soft link
+  command: ln -sf /usr/local/share/phantomjs-1.9.8-linux-x86_64/bin/phantomjs /usr/local/bin
+
+- name: Send test_integration to remote host
+  copy:
+    src=test_integration.py
+    dest={{ home_dir }}/test_integration.py
+    owner=vagrant
+    group=vagrant
+    mode=0755
+
+- name: Change premissions for file ghostdriver.log
+  file: path={{ home_dir }}/ghostdriver.log state=touch owner=vagrant group=vagrant mode=0777
+
+- name: Change premissions for dirs in .cache
+  command: sudo find /home/vagrant/.cache/ -type d -exec chmod 755 {} ";"
+
+- name: Change premissions for files in .cache
+  command: sudo find /home/vagrant/.cache/ -type f -exec chmod 755 {} ";"

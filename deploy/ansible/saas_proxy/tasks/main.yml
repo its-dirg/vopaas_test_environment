@@ -1,0 +1,89 @@
+- name: fetch SATOSA from github
+  git:
+    repo=https://github.com/its-dirg/SATOSA
+    dest={{ saas_dir }}
+    force=yes
+
+- name: update apt-get
+  apt:
+    update_cache=yes
+
+- name: install python3-pip
+  apt:
+    name=python3-pip
+
+- name: install python-dev
+  apt:
+    name=python-dev
+
+- name: install build-essential
+  apt:
+    name=build-essential
+
+- name: install libffi-dev
+  apt:
+    name=libffi-dev
+
+- name: install xmlsec1
+  apt:
+    name=xmlsec1
+
+- name: install example requirements
+  command:
+    pip3 install -r {{ saas_dir }}/requirements.txt
+
+- name: install cryptography
+  command:
+    pip3 install cryptography
+
+- name: install pycrypto
+  command:
+    pip3 install pycrypto
+
+- name: install libyaml-dev
+  apt:
+    name=libyaml-dev
+
+- name: install PyYAML
+  command:
+    pip3 install PyYAML
+
+- name: install python3-tk
+  apt:
+    name=python3-tk
+
+- name: Creates metadata folder
+  file: path={{ metadata_dir }} state=directory owner=vagrant group=vagrant mode=0755
+
+- name: copy SP metadata
+  copy: src=sp.xml dest={{ metadata_dir }}/sp.xml owner=vagrant group=vagrant mode=0755
+
+- name: Overwrite proxy_conf.yaml
+  template:
+    src=proxy_conf.yaml.j2
+    dest={{ saas_example_dir }}/proxy_conf.yaml
+
+- name: Overwrite saml2_backend.py
+  template:
+    src=saml2_backend.py.j2
+    dest={{ saas_example_dir }}/plugins/backends/saml2_backend.py
+
+- name: Overwrite saml2_frontend.py
+  template:
+    src=saml2_frontend.py.j2
+    dest={{ saas_example_dir }}/plugins/frontends/saml2_frontend.py
+
+- name: install example requirements
+  command:
+    pip3 install -r {{ saas_dir }}/requirements.txt
+
+- name: install saas from local project
+  command:
+    pip3 install -e .
+    chdir={{ saas_dir }}
+
+- name: start SaaS proxy
+  shell:
+    nohup python3 proxy_server.py proxy_conf.yaml &
+    chdir={{ saas_dir }}/example
+  poll: 0

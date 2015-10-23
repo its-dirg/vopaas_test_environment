@@ -1,0 +1,18 @@
+- when update:
+  - load:
+    - /opt/pyff/metadata
+  - break
+- when request:
+  - select
+  - pipe:
+    - when accept application/xml:
+      - xslt: {stylesheet: tidy.xsl}
+      - first
+      - finalize: {cacheDuration: PT10D, validUntil: PT5H}
+      - sign: {cert: {{ cert_file }}, key: {{ key_file }}}
+      - emit application/xml
+      - break
+    - when accept application/json:
+      - xslt: {stylesheet: discojson.xsl}
+      - {emit application/json: null}
+      - break

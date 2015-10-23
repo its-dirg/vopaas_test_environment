@@ -1,0 +1,1 @@
+idp_dir: "{{ pysaml2_dir }}/example/idp2"

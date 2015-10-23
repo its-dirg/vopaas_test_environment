@@ -1,0 +1,33 @@
+- name: Download pyff docker images
+  command: docker pull leifj/pyff
+
+- name: Creates pyff folder
+  file: path={{ pyff_dir }} state=directory owner=vagrant group=vagrant mode=0755
+
+- name: copy self-signed SSL cert
+  copy: src=localhost.crt dest={{ pyff_dir }}/{{ cert_file }} owner=vagrant group=vagrant mode=0755
+
+- name: copy self-signed SSL key
+  copy: src=localhost.key dest={{ pyff_dir }}/{{ key_file }} owner=vagrant group=vagrant mode=0755
+
+- name: Creates metadata folder
+  file: path={{ pyff_metadata_dir }} state=directory owner=vagrant group=vagrant mode=0755
+
+- name: copy IdP 1 metadata
+  copy: src=idp_1.xml dest={{ pyff_metadata_dir }}/idp_1.xml owner=vagrant group=vagrant mode=0755
+
+- name: copy IdP 2 metadata
+  copy: src=idp_2.xml dest={{ pyff_metadata_dir }}/idp_2.xml owner=vagrant group=vagrant mode=0755
+
+- name: copy saas_saml2_backend metadata
+  copy: src=saas_saml2_backend.xml dest={{ pyff_metadata_dir }}/saas_saml2_backend.xml owner=vagrant group=vagrant mode=0755
+
+- name: create config.yaml
+  template: src=mdx.fd.j2
+            dest={{ pyff_dir }}/mdx.fd
+
+- name: stop containers
+  script: stop_containers.sh
+
+- name: start pyff
+  command: docker run -e DATADIR=/opt/pyff -v {{ pyff_dir }}:/opt/pyff -p 9090:8080 -d leifj/pyff
