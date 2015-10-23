@@ -1,0 +1,18 @@
+<ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:ns2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:ns4="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" entityID="https://127.0.0.1:9091/Saml2IDP/proxy.xml"><ns0:Extensions><ns1:EntityAttributes><ns2:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"><ns2:AttributeValue xsi:type="xs:string">http://www.geant.net/uri/dataprotection-code-of-conduct/v1</ns2:AttributeValue><ns2:AttributeValue xsi:type="xs:string">http://www.swamid.se/category/research-and-education</ns2:AttributeValue><ns2:AttributeValue xsi:type="xs:string">http://www.swamid.se/category/hei-service</ns2:AttributeValue><ns2:AttributeValue xsi:type="xs:string">http://www.swamid.se/category/sfs-1993-1153</ns2:AttributeValue><ns2:AttributeValue xsi:type="xs:string">http://www.swamid.se/category/nren-service</ns2:AttributeValue><ns2:AttributeValue xsi:type="xs:string">http://www.swamid.se/category/eu-adequate-protection</ns2:AttributeValue></ns2:Attribute></ns1:EntityAttributes></ns0:Extensions><ns0:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><ns0:KeyDescriptor use="signing"><ns4:KeyInfo><ns4:X509Data><ns4:X509Certificate>MIIDJTCCAo6gAwIBAgIJAKNJuhAsfeGYMA0GCSqGSIb3DQEBBQUAMIGRMQswCQYD
+VQQGEwJBVTETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50ZXJuZXQg
+V2lkZ2l0cyBQdHkgTHRkMQwwCgYDVQQLEwNJVFMxHTAbBgNVBAMTFDEzMC4yMzku
+MjAwLjEzMzo4MDkyMR0wGwYJKoZIhvcNAQkBFg50ZXN0QGdtYWlsLmNvbTAeFw0x
+NDEyMTkxMzIwMjhaFw0yNDEyMTYxMzIwMjhaMIGZMQswCQYDVQQGEwJBVTETMBEG
+A1UECBMKU29tZS1TdGF0ZTENMAsGA1UEBxMEVW1lYTEhMB8GA1UEChMYSW50ZXJu
+ZXQgV2lkZ2l0cyBQdHkgTHRkMQwwCgYDVQQLEwNJVFMxGDAWBgNVBAMTDzEzMC4y
+MzkuMjAwLjEzMzEbMBkGCSqGSIb3DQEJARYMdGVzdEB0ZXN0LnNlMIGfMA0GCSqG
+SIb3DQEBAQUAA4GNADCBiQKBgQDK/V6NJmtWJKIbix266uv6Ko73VU2WDFItwfkc
+Q514yRUeUfPOf8xkD573Su9V5PTfKEjCtaCU5f2sYZu1jFVxn1eaicS6buabY94b
+I/AFQySnrJXwPEr97jbmUlZMe9Cp53PtnaU/byWeLb3YZgXIpDkz2SFm9L3Qgyw6
+WHxUOQIDAQABo3sweTAJBgNVHRMEAjAAMCwGCWCGSAGG+EIBDQQfFh1PcGVuU1NM
+IEdlbmVyYXRlZCBDZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQUPF3oj84gpM/pFpzq81Gq
+vItgYYkwHwYDVR0jBBgwFoAUndxXp0MlY6P48W3W4uoG9GEG9XowDQYJKoZIhvcN
+AQEFBQADgYEAasrnA6XcStWYHc5mihww9HcGkFmk1cZwuo1/enoD/z6PMIC8GLwr
+Vs+7jmJfjphz9pmFM2RJH8eFYDU39jwIBhIy5zFR8Tdc+DmY+yqWa9rAB/97Qwdn
+S1YOI6k4eN6Vq4ABGVNedSujrsPioUcfVR7TzlXQa+zaCfK6XU1d8YM=
+</ns4:X509Certificate></ns4:X509Data></ns4:KeyInfo></ns0:KeyDescriptor><ns0:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</ns0:NameIDFormat><ns0:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</ns0:NameIDFormat><ns0:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://127.0.0.1:9091/Saml2/sso/redirect" /><ns0:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://127.0.0.1:9091/Saml2/sso/post" /></ns0:IDPSSODescriptor></ns0:EntityDescriptor>

@@ -1,0 +1,21 @@
+- hosts: all
+
+  vars:
+    home_dir: "/home/vagrant"
+    metadata_dir: "{{ home_dir }}/metadata"
+    host: "http://localhost"
+    pyff_port: "9090"
+    pyff_url: "{{ host }}:{{ pyff_port }}"
+    sp_port: "9087"
+    sp_url: "{{ host }}:{{ sp_port }}"
+    idp_1_port: "9088"
+    idp_2_port: "9089"
+    saas_port: "9091"
+    sp_metadata: "{{ home_dir }}/pysaml2/example/sp-wsgi/sp.xml"
+
+  roles:
+    - {role: pyff, sudo: yes}
+    - {role: saas_proxy, sudo: yes}
+    - {role: sp, sudo: yes}
+
+

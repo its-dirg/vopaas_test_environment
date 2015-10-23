@@ -1,0 +1,62 @@
+- name: fetch pysaml2 from github
+  git:
+    repo=https://github.com/its-dirg/pysaml2
+    dest={{ pysaml2_dir }}
+    version=a001e0e7a3b9824096e284e409b8880bb83d4c5e
+    force=yes
+
+- name: install pip
+  apt:
+    name=python-pip
+
+- name: copy saas_saml2_backend metadata
+  copy: src=saas_saml2_frontend.xml dest={{ metadata_dir }}/saas_saml2_frontend.xml owner=vagrant group=vagrant mode=0755
+
+- name: Overwrite sp_conf.py
+  template:
+    src=sp_conf.py.j2
+    dest={{ sp_dir }}/sp_conf.py
+
+- name: Overwrite service_conf.py
+  template:
+    src=service_conf.py.j2
+    dest={{ sp_dir }}/service_conf.py
+
+- name: install cryptography
+  pip:
+    name=cryptography
+
+- name: install pycrypto
+  pip:
+    name=pycrypto
+
+- name: install libyaml-dev
+  apt:
+    name=libyaml-dev
+
+- name: install PyYAML
+  pip:
+    name=PyYAML
+
+- name: install example requirements
+  pip:
+    requirements={{ pysaml2_dir }}/example/requirements.txt
+
+- name: install pysaml2 from local project
+  command:
+    pip install -e .
+    chdir={{ pysaml2_dir }}
+
+- name: generate metadata for the SP
+  shell:
+    make_metadata.py sp_conf.py > {{ sp_metadata }}
+    chdir={{ sp_dir }}
+
+- name: kill sp
+  script: kill_sp.sh
+
+- name: start SP
+  shell:
+    nohup python sp.py sp_conf &
+    chdir={{ sp_dir }}
+  poll: 0
