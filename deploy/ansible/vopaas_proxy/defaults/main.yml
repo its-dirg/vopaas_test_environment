@@ -1,0 +1,11 @@
+proxy_cert_server_dir: "{{ cert_dir }}/server"
+proxy_server_cert: "{{ cert_server_dir }}/localhost.crt"
+proxy_server_key: "{{ cert_server_dir }}/localhost.key"
+
+proxy_cert_frontend_dir: "{{ cert_dir }}/frontend"
+proxy_frontend_cert: "{{ cert_frontend_dir }}/localhost.crt"
+proxy_frontend_key: "{{ cert_frontend_dir }}/localhost.key"
+
+proxy_cert_backend_dir: "{{ cert_dir }}/backend"
+proxy_backend_cert: "{{ cert_backend_dir }}/localhost.crt"
+proxy_backend_key: "{{ cert_backend_dir }}/localhost.key"

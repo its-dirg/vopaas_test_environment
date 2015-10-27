@@ -42,8 +42,8 @@ class Saml2BackendModulePlugin(BackendModulePlugin):
                 }
             },
             "debug": 1,
-            "key_file": "{{ backend_key }}",
-            "cert_file": "{{ backend_cert }}",
+            "key_file": "{{ proxy_backend_key }}",
+            "cert_file": "{{ proxy_backend_cert }}",
             "metadata": {
                 "local": ["{{ metadata_dir_idp1 }}", "{{ metadata_dir_idp2 }}"],
             },

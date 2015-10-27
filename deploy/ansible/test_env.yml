@@ -19,16 +19,8 @@
     pyff_url: "{{ host }}:{{ pyff_port }}"
     sp_url: "{{ host }}:{{ sp_port }}"
     cert_dir: "{{ home_dir }}/certs"
-    cert_server_dir: "{{ cert_dir }}/server"
-    cert_frontend_dir: "{{ cert_dir }}/frontend"
-    cert_backend_dir: "{{ cert_dir }}/backend"
-    server_cert: "{{ cert_server_dir }}/localhost.crt"
-    server_key: "{{ cert_server_dir }}/localhost.key"
+
     op_cert_dir: "{{ cert_dir }}/op"
-    frontend_cert: "{{ cert_frontend_dir }}/localhost.crt"
-    frontend_key: "{{ cert_frontend_dir }}/localhost.key"
-    backend_cert: "{{ cert_backend_dir }}/localhost.crt"
-    backend_key: "{{ cert_backend_dir }}/localhost.key"
     op_cert: "{{ op_cert_dir }}/localhost.crt"
     op_key: "{{ op_cert_dir }}/localhost.key"
     pyoidc_dir: "{{ home_dir }}/pyoidc"
@@ -41,26 +33,9 @@
   pre_tasks:
     - name: create directory for certs
       file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
-    - name: create directory for server certs
-      file: path={{ cert_server_dir }} state=directory owner=vagrant group=vagrant mode=0755
+
     - name: create directory for op certs
       file: path={{ op_cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
-    - name: create directory for frontend certs
-      file: path={{ cert_frontend_dir }} state=directory owner=vagrant group=vagrant mode=0755
-    - name: create directory for backend certs
-      file: path={{ cert_backend_dir }} state=directory owner=vagrant group=vagrant mode=0755
-    - name: copy server cert
-      copy: src=localhost.crt dest={{ server_cert }} owner=vagrant group=vagrant mode=0755
-    - name: copy server private key
-      copy: src=localhost.key dest={{ server_key }} owner=vagrant group=vagrant mode=0755
-    - name: copy frontend cert
-      copy: src=localhost.crt dest={{ frontend_cert }} owner=vagrant group=vagrant mode=0755
-    - name: copy frontend private key
-      copy: src=localhost.key dest={{ frontend_key }} owner=vagrant group=vagrant mode=0755
-    - name: copy backend cert
-      copy: src=localhost.crt dest={{ backend_cert }} owner=vagrant group=vagrant mode=0755
-    - name: copy backend private key
-      copy: src=localhost.key dest={{ backend_key }} owner=vagrant group=vagrant mode=0755
     - name: copy op cert
       copy: src=localhost.crt dest={{ op_cert }} owner=vagrant group=vagrant mode=0755
     - name: copy op private key
