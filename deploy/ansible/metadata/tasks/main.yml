@@ -1,0 +1,37 @@
+- name: Creates static metadata folder
+  file: path={{ metadata_static_dir }} state=directory owner=vagrant group=vagrant mode=0755
+
+- name: Creates pyff metadata folder
+  file: path={{ pyff_metadata_dir }} state=directory owner=vagrant group=vagrant mode=0755
+
+- name: Update cffi
+  pip: name=cffi state=latest
+
+- name: Update cryptography
+  pip: name=cryptography state=latest
+
+- name: Generate sp metadata
+  shell:
+    make_metadata.py sp_conf.py > {{ metadata_dir_sp }}
+    chdir={{ sp_dir }}
+
+- name: Generate idp_1 metadata
+  shell:
+    make_metadata.py idp_1_conf.py > {{ metadata_dir_idp1 }}
+    chdir={{ idp_dir }}
+
+- name: Generate idp_2 metadata
+  shell:
+    make_metadata.py idp_2_conf.py > {{ metadata_dir_idp2 }}
+    chdir={{ idp_dir }}
+
+- name: Generate proxy backend metadata
+  shell:
+    make_saml_metadata.py -b -o {{ pyff_metadata_dir }} proxy_conf.yaml
+    chdir={{ proxy_dir }}
+
+- name: Generate proxy backend metadata
+  shell:
+    make_vopaas_metadata.py -o {{ pyff_metadata_dir }} proxy_conf.yaml
+    chdir={{ proxy_dir }}
+

@@ -11,7 +11,7 @@ except ImportError:
 xmlsec_path = '/usr/bin/xmlsec1'
 
 # Make sure the same port number appear in service_conf.py
-BASE = "http://127.0.0.1:9087"
+BASE = "http://127.0.0.1:{{ sp_port }}"
 
 CONFIG = {
     "entityid": "%s/%ssp.xml" % (BASE, ""),
@@ -42,7 +42,15 @@ CONFIG = {
     "cert_file": "pki/mycert.pem",
     "xmlsec_binary": xmlsec_path,
     "metadata": {
-        "local": ["{{ metadata_dir }}/saas_saml2_frontend.xml"],
+        "remote": [{"url": "{{ pyff_url }}/role/idp.xml", "cert": None}],
     },
     "name_form": NAME_FORMAT_URI,
+        "logger": {
+        "rotating": {
+            "filename": "sp.log",
+            "maxBytes": 500000,
+            "backupCount": 5,
+        },
+        "loglevel": "debug",
+    }
 }

@@ -7,14 +7,14 @@ from saml2.entity_category.swamid import RESEARCH_AND_EDUCATION, HEI, \
     SFS_1993_1153, NREN, EU
 from saml2.extension.idpdisc import BINDING_DISCO
 import os.path
-from satosa.backends.saml2 import SamlBackend
+from vopaas.backends.saml2_backend import VOPaaSSamlBackend
 
 from satosa.plugin_base.endpoint import BackendModulePlugin
 
 xmlsec_path = '/usr/bin/xmlsec1'
 
 PROVIDER = "Saml2"
-MODULE = SamlBackend
+MODULE = VOPaaSSamlBackend
 
 
 class Saml2BackendModulePlugin(BackendModulePlugin):
@@ -45,7 +45,7 @@ class Saml2BackendModulePlugin(BackendModulePlugin):
             "key_file": "{{ backend_key }}",
             "cert_file": "{{ backend_cert }}",
             "metadata": {
-                "local": ["{{ metadata_dir_idp1}}", "{{ metadata_dir_idp2}}"],
+                "local": ["{{ metadata_dir_idp1 }}", "{{ metadata_dir_idp2 }}"],
             },
             "organization": {
                 "display_name": "Example Identities",
@@ -76,7 +76,7 @@ class Saml2BackendModulePlugin(BackendModulePlugin):
         }
         config = {"config": sp_config,
                   "encryption_key": "INJxz3Seglf3",
-                  "disco_srv": "http://localhost:9090/role/idp.ds",
+                  "disco_srv": "{{ pyff_url }}/role/idp.ds",
                   "publish_metadata": "%s/metadata" % module_base
                   }
 

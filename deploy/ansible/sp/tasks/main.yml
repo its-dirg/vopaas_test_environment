@@ -9,9 +9,6 @@
   apt:
     name=python-pip
 
-- name: copy saas_saml2_backend metadata
-  copy: src=saas_saml2_frontend.xml dest={{ metadata_dir }}/saas_saml2_frontend.xml owner=vagrant group=vagrant mode=0755
-
 - name: Overwrite sp_conf.py
   template:
     src=sp_conf.py.j2
@@ -30,10 +27,6 @@
   pip:
     name=pycrypto
 
-- name: install libyaml-dev
-  apt:
-    name=libyaml-dev
-
 - name: install PyYAML
   pip:
     name=PyYAML
@@ -46,17 +39,3 @@
   command:
     pip install -e .
     chdir={{ pysaml2_dir }}
-
-- name: generate metadata for the SP
-  shell:
-    make_metadata.py sp_conf.py > {{ sp_metadata }}
-    chdir={{ sp_dir }}
-
-- name: kill sp
-  script: kill_sp.sh
-
-- name: start SP
-  shell:
-    nohup python sp.py sp_conf &
-    chdir={{ sp_dir }}
-  poll: 0

@@ -1,6 +1,6 @@
 - when update:
   - load:
-    - /opt/pyff/metadata
+    - /opt/pyff/{{ metadata_dir_name }}
   - break
 - when request:
   - select
@@ -9,7 +9,7 @@
       - xslt: {stylesheet: tidy.xsl}
       - first
       - finalize: {cacheDuration: PT10D, validUntil: PT5H}
-      - sign: {cert: {{ cert_file }}, key: {{ key_file }}}
+      - sign: {cert: {{ pyff_cert_file }}, key: {{ pyff_key_file }}}
       - emit application/xml
       - break
     - when accept application/json:

@@ -36,27 +36,3 @@
   pip:
     name=python-ldap
 
-- name: generate metadata for idp_1
-  shell:
-    make_metadata.py idp_1_conf.py > {{ pyff_metadata_dir }}/idp_1.xml
-    chdir={{ idp_dir }}
-
-- name: generate metadata for idp_2
-  shell:
-    make_metadata.py idp_2_conf.py > {{ pyff_metadata_dir }}/idp_2.xml
-    chdir={{ idp_dir }}
-
-- name: kill idps
-  script: kill_idps.sh
-
-- name: starting IDP 1
-  shell:
-    nohup python idp.py idp_1_conf &
-    chdir={{ idp_dir }}
-  poll: 0
-
-- name: starting IDP 2
-  shell:
-    nohup python idp.py idp_2_conf &
-    chdir={{ idp_dir }}
-  poll: 0

@@ -4,58 +4,98 @@
     home_dir: "/home/vagrant"
     pysaml2_dir: "{{ home_dir }}/pysaml2"
     pyff_dir: "{{ home_dir }}/pyff"
-    pyff_metadata_dir: "{{ pyff_dir }}/metadata"
-    metadata_dir: "{{ home_dir }}/metadata"
+    metadata_dir_name: "metadata"
+    pyff_metadata_dir: "{{ pyff_dir }}/{{ metadata_dir_name }}"
+    metadata_static_dir: "{{ home_dir }}/{{ metadata_dir_name }}"
+    metadata_dir_sp: "{{ metadata_static_dir }}/sp.xml"
+    metadata_dir_idp1: "{{ metadata_static_dir }}/idp1.xml"
+    metadata_dir_idp2: "{{ metadata_static_dir }}/idp2.xml"
     host: "http://localhost"
     pyff_port: "9090"
-    pyff_url: "{{ host }}:{{ pyff_port }}"
-    sp_port: "9087"
-    sp_url: "{{ host }}:{{ sp_port }}"
     idp_1_port: "9088"
     idp_2_port: "9089"
-    saas_port: "9091"
-    sp_metadata: "{{ home_dir }}/pysaml2/example/sp-wsgi/sp.xml"
+    proxy_port: "9091"
+    sp_port: "9087"
+    pyff_url: "{{ host }}:{{ pyff_port }}"
+    sp_url: "{{ host }}:{{ sp_port }}"
     cert_dir: "{{ home_dir }}/certs"
     cert_server_dir: "{{ cert_dir }}/server"
     cert_frontend_dir: "{{ cert_dir }}/frontend"
     cert_backend_dir: "{{ cert_dir }}/backend"
     server_cert: "{{ cert_server_dir }}/localhost.crt"
     server_key: "{{ cert_server_dir }}/localhost.key"
+    op_cert_dir: "{{ cert_dir }}/op"
     frontend_cert: "{{ cert_frontend_dir }}/localhost.crt"
     frontend_key: "{{ cert_frontend_dir }}/localhost.key"
     backend_cert: "{{ cert_backend_dir }}/localhost.crt"
     backend_key: "{{ cert_backend_dir }}/localhost.key"
+    op_cert: "{{ op_cert_dir }}/localhost.crt"
+    op_key: "{{ op_cert_dir }}/localhost.key"
     pyoidc_dir: "{{ home_dir }}/pyoidc"
-    op_dir: "{{ pyoidc_dir }}/pyoidc/oidc_example/op2"
+    op_dir: "{{ pyoidc_dir }}/oidc_example/op2"
+    vopaas_dir: "{{ home_dir }}/vopaas"
+    proxy_dir: "{{ vopaas_dir }}/example"
+    sp_dir: "{{ pysaml2_dir }}/example/sp-wsgi"
+    idp_dir: "{{ pysaml2_dir }}/example/idp2"
 
   pre_tasks:
     - name: create directory for certs
       file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
     - name: create directory for server certs
       file: path={{ cert_server_dir }} state=directory owner=vagrant group=vagrant mode=0755
+    - name: create directory for op certs
+      file: path={{ op_cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
     - name: create directory for frontend certs
       file: path={{ cert_frontend_dir }} state=directory owner=vagrant group=vagrant mode=0755
     - name: create directory for backend certs
       file: path={{ cert_backend_dir }} state=directory owner=vagrant group=vagrant mode=0755
-    - name: copy localhost cert
+    - name: copy server cert
       copy: src=localhost.crt dest={{ server_cert }} owner=vagrant group=vagrant mode=0755
-    - name: copy localhost private key
+    - name: copy server private key
       copy: src=localhost.key dest={{ server_key }} owner=vagrant group=vagrant mode=0755
-    - name: copy localhost cert
+    - name: copy frontend cert
       copy: src=localhost.crt dest={{ frontend_cert }} owner=vagrant group=vagrant mode=0755
-    - name: copy localhost private key
+    - name: copy frontend private key
       copy: src=localhost.key dest={{ frontend_key }} owner=vagrant group=vagrant mode=0755
-    - name: copy localhost cert
+    - name: copy backend cert
       copy: src=localhost.crt dest={{ backend_cert }} owner=vagrant group=vagrant mode=0755
-    - name: copy localhost private key
+    - name: copy backend private key
       copy: src=localhost.key dest={{ backend_key }} owner=vagrant group=vagrant mode=0755
+    - name: copy op cert
+      copy: src=localhost.crt dest={{ op_cert }} owner=vagrant group=vagrant mode=0755
+    - name: copy op private key
+      copy: src=localhost.key dest={{ op_key }} owner=vagrant group=vagrant mode=0755
+#    - name: Update apt
+#      shell:
+#        sudo apt-get update
+#    - name: install python dev
+#      apt:
+#        name=python-dev
+#      sudo: Yes
+#    - name: install ffi
+#      apt:
+#        name=libffi-dev
+#      sudo: Yes
+    - name: install apt pkg
+      apt: pkg={{ item }} state=present update_cache=yes
+      with_items:
+        - build-essential
+        - python-dev
+        - libffi-dev
+        - xmlsec1
+        - libyaml-dev
+      sudo: Yes
 
   roles:
     - {role: pyff, sudo: yes}
-    - {role: saas_proxy, sudo: yes}
     - {role: sp, sudo: yes}
     - {role: idps, sudo: yes}
-    - {role: integration_test, sudo: yes}
     - {role: op, sudo: yes}
+#    - {role: saas_proxy, sudo: yes}
+    - {role: vopaas_proxy, sudo: yes}
+##    - {role: integration_test, sudo: yes}
+    - {role: metadata, sudo: yes}
+    - {role: startup, sudo: yes}
+
 
 

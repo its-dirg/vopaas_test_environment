@@ -1,1 +1,0 @@
-sp_dir: "{{ pysaml2_dir }}/example/sp-wsgi"

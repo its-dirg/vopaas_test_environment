@@ -1,0 +1,50 @@
+#- name: Start services
+#  script: startup.sh
+
+- name: stop containers
+  script: stop_containers.sh
+
+- name: Create wait_for_pyff script
+  template:
+    src=wait_for_pyff.sh
+    dest={{ home_dir }}/wait_for_pyff.sh
+
+- name: start pyff
+  shell:
+    docker run -e DATADIR=/opt/pyff -v .:/opt/pyff -p {{ pyff_port }}:8080 -d leifj/pyff
+    chdir={{ pyff_dir }}
+
+- name: wait for pyff
+  shell:
+    ./wait_for_pyff.sh
+    chdir={{ home_dir }}
+
+- name: kill idps
+  script: kill_idps.sh
+
+- name: starting IDP 1
+  shell:
+    nohup python idp.py idp_1_conf &
+    chdir={{ idp_dir }}
+  poll: 0
+
+- name: starting IDP 2
+  shell:
+    nohup python idp.py idp_2_conf &
+    chdir={{ idp_dir }}
+  poll: 0
+
+- name: kill sp
+  script: kill_sp.sh
+
+- name: start SP
+  shell:
+    nohup python sp.py sp_conf &
+    chdir={{ sp_dir }}
+  poll: 0
+
+- name: start proxy
+  shell:
+    nohup python3 proxy_server.py proxy_conf.yaml &
+    chdir={{ proxy_dir }}
+  poll: 0

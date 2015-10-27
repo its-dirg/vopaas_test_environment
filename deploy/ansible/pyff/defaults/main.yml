@@ -1,2 +1,2 @@
-cert_file: localhost.crt
-key_file: localhost.key
+pyff_cert_file: pyff.crt
+pyff_key_file: pyff.key

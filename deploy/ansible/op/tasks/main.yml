@@ -1,4 +1,4 @@
-- name: fetch pysaml2 from github
+- name: fetch pyoidc from github
   git:
     repo=https://github.com/rohe/pyoidc
     dest={{ pyoidc_dir }}

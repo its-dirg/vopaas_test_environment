@@ -1,2 +1,0 @@
-saas_dir: "{{ home_dir }}/saas"
-saas_example_dir: "{{ saas_dir }}/example"

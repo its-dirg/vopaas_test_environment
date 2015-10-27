@@ -130,7 +130,7 @@ CONFIG = {
     "key_file": full_path("pki/mykey.pem"),
     "cert_file": full_path("pki/mycert.pem"),
     "metadata": {
-        "remote": [{ "url":"http://localhost:9090/role/sp.xml", "cert": None}],
+        "remote": [{ "url":"{{ pyff_url }}/role/sp.xml", "cert": None}],
     },
     "organization": {
         "display_name": [("Rolands Identiteter v2", "en")],
