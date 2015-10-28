@@ -15,6 +15,11 @@
     make_metadata.py sp_conf.py > {{ metadata_dir_sp }}
     chdir={{ sp_dir }}
 
+- name: Generate sp pyff metadata
+  shell:
+    make_metadata.py sp_conf.py > {{ pyff_metadata_dir }}/sp.xml
+    chdir={{ sp_dir }}
+
 - name: Generate idp_1 metadata
   shell:
     make_metadata.py idp_1_conf.py > {{ metadata_dir_idp1 }}

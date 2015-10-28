@@ -1,14 +1,23 @@
-- name: Download pyff docker images
-  command: docker pull leifj/pyff
-
-- name: Creates pyff folder
+#- name: install pyff
+#  pip: name=pyff
+- name: create pyff folder
   file: path={{ pyff_dir }} state=directory owner=vagrant group=vagrant mode=0755
 
-- name: copy self-signed SSL cert
-  copy: src=certs/pyff.crt dest={{ pyff_dir }}/{{ pyff_cert_file }} owner=vagrant group=vagrant mode=0755
+- name: fetch pyff from github
+  git:
+    repo=https://github.com/leifj/pyFF
+    dest={{ pyff_dir }}/src
+    version=0f2ae833f4adb2ecc42545e6f6543823e5657f02
+    force=yes
 
-- name: copy self-signed SSL key
-  copy: src=certs/pyff.key dest={{ pyff_dir }}/{{ pyff_key_file }} owner=vagrant group=vagrant mode=0755
+- name: install requirements
+  pip:
+    requirements={{ pyff_dir }}/src/requirements.txt
+
+- name: install pyff from local project
+  command:
+    pip install -e .
+    chdir={{ pyff_dir }}/src
 
 - name: create config.yaml
   template: src=mdx.fd.j2

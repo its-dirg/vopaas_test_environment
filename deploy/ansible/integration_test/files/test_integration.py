@@ -14,7 +14,7 @@ class TestSaaS:
     def test_login_to_idp_1(self):
         driver = webdriver.PhantomJS(executable_path="/usr/local/bin/phantomjs",
                                      service_args=['--ignore-ssl-errors=true'])
-        driver.get("http://127.0.0.1:9087")
+        driver.get("http://{{ hostname }}:9087")
         driver.find_element_by_id("to_list").click()
 
         dropdown = driver.find_element_by_id("thelist")

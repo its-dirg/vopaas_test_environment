@@ -1,33 +1,32 @@
 - name: fetch pyoidc from github
   git:
-    repo=https://github.com/rohe/pyoidc
+    repo=https://github.com/its-dirg/pyoidc
     dest={{ pyoidc_dir }}
-    version=1eaca1750233c583dec0b9ff26c08d3fdb9a5c6b
+    version=4ad7333d4afa0f2da82fdc761d8086a603f52597
     force=yes
 
-- name: install pip
-  apt:
-    name=python-pip
+- name: fetch jwkest from github
+  git:
+    repo=https://github.com/rohe/pyjwkest
+    dest={{ home_dir }}/jwkest
+    version=6928cc9c4490389b91e064422e1fe2a7ad7cf5c8
+    force=yes
 
 - name: Overwrite config.py
   template:
     src=config.py.j2
     dest={{ op_dir }}/config.py
 
-- name: install requirements
-  pip:
-    requirements={{ pyoidc_dir }}/requirements.txt
+- name: install jwkest
+  command:
+    pip3 install -e .
+    chdir={{ home_dir }}/jwkest
+
+#- name: install requirements
+#  shell:
+#    pip3 install -r {{ pyoidc_dir }}/requirements.txt
 
 - name: install pysaml2 from local project
   command:
-    pip install -e .
+    pip3 install -e .
     chdir={{ pyoidc_dir }}
-
-- name: kill OP
-  script: kill_op.sh
-
-- name: start OP
-  shell:
-    nohup python server.py -p 9092 config &
-    chdir={{ op_dir }}
-  poll: 0

@@ -76,7 +76,7 @@ class Saml2BackendModulePlugin(BackendModulePlugin):
         }
         config = {"config": sp_config,
                   "encryption_key": "INJxz3Seglf3",
-                  "disco_srv": "http://localhost:9090/role/idp.ds",
+                  "disco_srv": "http://{{ hostname }}:9090/role/idp.ds",
                   "publish_metadata": "%s/metadata" % module_base
                   }
 

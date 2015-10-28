@@ -2,7 +2,7 @@
   git:
     repo=https://github.com/its-dirg/pysaml2
     dest={{ pysaml2_dir }}
-    version=a001e0e7a3b9824096e284e409b8880bb83d4c5e
+    version=014d7e2d4bc5d6b749a306cf6716739771c3c988
     clone=no
     force=yes
 

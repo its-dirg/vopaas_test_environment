@@ -11,7 +11,7 @@ except ImportError:
 xmlsec_path = '/usr/bin/xmlsec1'
 
 # Make sure the same port number appear in service_conf.py
-BASE = "http://127.0.0.1:{{ sp_port }}"
+BASE = "http://{{ hostname }}:{{ sp_port }}"
 
 CONFIG = {
     "entityid": "%s/%ssp.xml" % (BASE, ""),

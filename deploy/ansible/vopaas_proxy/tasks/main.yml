@@ -25,10 +25,6 @@
     dest={{ vopaas_dir }}
     force=yes
 
-- name: install python3-pip
-  apt:
-    name=python3-pip
-
 - name: install example requirements
   command:
     pip3 install -r {{ vopaas_dir }}/requirements.txt
@@ -44,10 +40,6 @@
 - name: install PyYAML
   command:
     pip3 install PyYAML
-
-- name: install python3-tk
-  apt:
-    name=python3-tk
 
 - name: install pysaml
   command:
@@ -67,6 +59,11 @@
   template:
     src=saml2_frontend.py.j2
     dest={{ proxy_dir }}/plugins/frontends/saml2_frontend.py
+
+- name: Overwrite op backend
+  template:
+    src=oidc_backend.py.j2
+    dest={{ proxy_dir }}/plugins/backends/oidc_backend.py
 
 - name: install example requirements
   command:

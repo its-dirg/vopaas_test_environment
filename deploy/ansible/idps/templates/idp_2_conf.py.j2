@@ -27,13 +27,13 @@ def full_path(local_file):
 
 HOST = "0.0.0.0"
 PORT = {{ idp_2_port }}
-
+HOSTNAME = "{{ hostname }}"
 HTTPS = False
 
 if HTTPS:
-    BASE = "https://%s:%s" % (HOST, PORT)
+    BASE = "https://%s:%s" % (HOSTNAME, PORT)
 else:
-    BASE = "http://%s:%s" % (HOST, PORT)
+    BASE = "http://%s:%s" % (HOSTNAME, PORT)
 
 # HTTPS cert information
 SERVER_CERT = "pki/mycert.pem"

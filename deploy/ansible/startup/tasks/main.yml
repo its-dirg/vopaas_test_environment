@@ -1,17 +1,16 @@
-#- name: Start services
-#  script: startup.sh
-
-- name: stop containers
-  script: stop_containers.sh
+- name: Killing pyff
+  action: shell pkill -f pyffd
+  ignore_errors: True
 
 - name: Create wait_for_pyff script
   template:
     src=wait_for_pyff.sh
     dest={{ home_dir }}/wait_for_pyff.sh
+    mode=0755
 
 - name: start pyff
   shell:
-    docker run -e DATADIR=/opt/pyff -v .:/opt/pyff -p {{ pyff_port }}:8080 -d leifj/pyff
+    pyffd -P {{ pyff_port }} --loglevel=DEBUG --log={{ pyff_dir }}/pyff.log -H 0.0.0.0 --dir={{ pyff_dir }} mdx.fd
     chdir={{ pyff_dir }}
 
 - name: wait for pyff
@@ -39,9 +38,21 @@
 
 - name: start SP
   shell:
-    nohup python sp.py sp_conf &
+    nohup python sp.py -D {{ pyff_url }}/role/idp.ds sp_conf &
     chdir={{ sp_dir }}
   poll: 0
+
+- name: kill OP
+  script: kill_op.sh
+
+- name: start OP
+  shell:
+    nohup python3 server.py -p {{ op_port }} config &
+    chdir={{ op_dir }}
+  poll: 0
+
+- name: Kill proxy
+  script: kill_proxy.sh
 
 - name: start proxy
   shell:
