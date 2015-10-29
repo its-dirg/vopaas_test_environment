@@ -10,7 +10,7 @@ class TestSaaS:
             driver = webdriver.PhantomJS()
         except:
             driver = webdriver.PhantomJS("/usr/local/bin/phantomjs")
-        driver.get("https://www.google.se/")
+        driver.get("http://www.google.se/")
         image = driver.find_element_by_id("hplogo")
         assert image.text == "Sverige"
 
