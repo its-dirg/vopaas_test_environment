@@ -25,11 +25,11 @@ class OpenidPlugin(BackendModulePlugin):
             "authz_page": PROVIDER,
             "acr_values": ["PASSWORD"],
             "verify_ssl": False,
-            "op_url": "{{ op_host }}:{{ op_port }}",
+            "op_url": "{{ op_url }}:{{ op_port }}",
             "state_encryption_key": "Qrn9IQ5hr9uUnIdNQe2e0KxsmR3CusyARs3RKLjp",
             "state_id": "OpenID_Qrn9R3Cus",
             "client": {
-                "userid": "{{ op_host }}:{{ op_port }}",
+                "userid": "{{ op_url }}:{{ op_port }}",
                 "client_info": {
                     "application_type": "web",
                     "application_name": "SATOSA",

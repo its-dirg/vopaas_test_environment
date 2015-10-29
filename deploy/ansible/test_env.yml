@@ -16,6 +16,7 @@
     metadata_dir_sp: "{{ metadata_static_dir }}/sp.xml"
     metadata_dir_idp1: "{{ metadata_static_dir }}/idp1.xml"
     metadata_dir_idp2: "{{ metadata_static_dir }}/idp2.xml"
+    cm_dir: "{{ home_dir }}/CMservice"
 
     hostname: "127.0.0.1"
     host: "http://{{ hostname }}"
@@ -29,7 +30,7 @@
     
     pyff_discovery_url: "{{ host }}:{{ pyff_port }}"    
     cm_url: "https://{{ hostname }}:{{ cm_port }}"
-
+    op_url: "https://{{ hostname }}"
 
   pre_tasks:
     - name: create directory for certs

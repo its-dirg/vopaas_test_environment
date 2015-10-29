@@ -10,7 +10,7 @@
     dest={{ cm_dir }}/server/settings.cfg
 
 - name: Add public sign key
-  copy: src=certs/vopaas_cm_key.pub dest={{ cm_dir }}/server/keys/sign_key.pub
+  copy: src=certs/vopaas_cm.pub dest={{ cm_dir }}/server/keys/sign_key.pub
 
 - name: install requirements
   command:
