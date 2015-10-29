@@ -29,45 +29,45 @@
     pyoidc_dir: "{{ home_dir }}/pyoidc"
     op_dir: "{{ pyoidc_dir }}/oidc_example/op2"
     vopaas_dir: "{{ home_dir }}/vopaas"
+    cm_dir: "{{ home_dir }}/consent_manager"
     proxy_dir: "{{ vopaas_dir }}/example"
     sp_dir: "{{ pysaml2_dir }}/example/sp-wsgi"
     idp_dir: "{{ pysaml2_dir }}/example/idp2"
 
-#  pre_tasks:
-#    - name: create directory for certs
-#      file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
-#
-#    - name: create directory for op certs
-#      file: path={{ op_cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
-#    - name: copy op cert
-#      copy: src=localhost.crt dest={{ op_cert }} owner=vagrant group=vagrant mode=0755
-#    - name: copy op private key
-#      copy: src=localhost.key dest={{ op_key }} owner=vagrant group=vagrant mode=0755
-#
-#    - name: install apt pkg
-#      apt: pkg={{ item }} state=present update_cache=yes
-#      with_items:
-#        - build-essential
-#        - git
-#        - python-dev
-#        - libssl-dev
-#        - libffi-dev
-#        - xmlsec1
-#        - libxml2
-#        - libxslt1.1
-#        - libyaml-dev
-#        - libxml2-dev
-#        - libxslt1-dev
-#        - libxslt-dev
-#        - vim
-#        - python-setuptools
-#        - python-libxslt1
-#        - python-libxml2
-#        - python-pip
-#        - python3-pip
-#        - python3-tk
-#      sudo: Yes
+  pre_tasks:
+    - name: create directory for certs
+      file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
 
+    - name: create directory for op certs
+      file: path={{ op_cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
+    - name: copy op cert
+      copy: src=localhost.crt dest={{ op_cert }} owner=vagrant group=vagrant mode=0755
+    - name: copy op private key
+      copy: src=localhost.key dest={{ op_key }} owner=vagrant group=vagrant mode=0755
+
+    - name: install apt pkg
+      apt: pkg={{ item }} state=present update_cache=yes
+      with_items:
+        - build-essential
+        - git
+        - python-dev
+        - libssl-dev
+        - libffi-dev
+        - xmlsec1
+        - libxml2
+        - libxslt1.1
+        - libyaml-dev
+        - libxml2-dev
+        - libxslt1-dev
+        - libxslt-dev
+        - vim
+        - python-setuptools
+        - python-libxslt1
+        - python-libxml2
+        - python-pip
+        - python3-pip
+        - python3-tk
+      sudo: Yes
 
   roles:
     - {role: pyff, sudo: yes}
@@ -75,6 +75,7 @@
     - {role: idps, sudo: yes}
     - {role: op, sudo: yes}
     - {role: vopaas_proxy, sudo: yes}
+    - {role: consent_manager, sudo: yes}
 ###    - {role: integration_test, sudo: yes}
     - {role: metadata, sudo: yes}
     - {role: startup, sudo: yes}
