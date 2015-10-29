@@ -1,3 +1,10 @@
+- name: create directory for op certs
+  file: path={{ op_cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
+- name: copy op cert
+  copy: src=certs/op.crt dest={{ op_cert }} owner=vagrant group=vagrant mode=0755
+- name: copy op private key
+  copy: src=certs/op.key dest={{ op_key }} owner=vagrant group=vagrant mode=0755
+
 - name: fetch pyoidc from github
   git:
     repo=https://github.com/its-dirg/pyoidc

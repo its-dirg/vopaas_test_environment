@@ -1,0 +1,3 @@
+op_cert_dir: "{{ cert_dir }}/op"
+op_cert: "{{ op_cert_dir }}/op.crt"
+op_key: "{{ op_cert_dir }}/op.key"
