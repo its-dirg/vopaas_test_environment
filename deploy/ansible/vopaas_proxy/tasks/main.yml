@@ -1,23 +1,23 @@
 - name: create directory for server certs
   file: path={{ proxy_cert_server_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy server cert
-  copy: src=localhost.crt dest={{ proxy_server_cert }} owner=vagrant group=vagrant mode=0755
+  copy: src=certs/proxy_server.crt dest={{ proxy_server_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy server private key
-  copy: src=localhost.key dest={{ proxy_server_key }} owner=vagrant group=vagrant mode=0755
+  copy: src=certs/proxy_server.key dest={{ proxy_server_key }} owner=vagrant group=vagrant mode=0755
 
 - name: create directory for frontend certs
   file: path={{ proxy_cert_frontend_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy frontend cert
-  copy: src=localhost.crt dest={{ proxy_frontend_cert }} owner=vagrant group=vagrant mode=0755
+  copy: src=certs/proxy_frontend.crt dest={{ proxy_frontend_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy frontend private key
-  copy: src=localhost.key dest={{ proxy_frontend_key }} owner=vagrant group=vagrant mode=0755
+  copy: src=certs/proxy_frontend.key dest={{ proxy_frontend_key }} owner=vagrant group=vagrant mode=0755
 
 - name: create directory for backend certs
   file: path={{ proxy_cert_backend_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy backend cert
-  copy: src=localhost.crt dest={{ proxy_backend_cert }} owner=vagrant group=vagrant mode=0755
+  copy: src=certs/proxy_backend.crt dest={{ proxy_backend_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy backend private key
-  copy: src=localhost.key dest={{ proxy_backend_key }} owner=vagrant group=vagrant mode=0755
+  copy: src=certs/proxy_backend.key dest={{ proxy_backend_key }} owner=vagrant group=vagrant mode=0755
 
 - name: fetch VOPaaS from github
   git:

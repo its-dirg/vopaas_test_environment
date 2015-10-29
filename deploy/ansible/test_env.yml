@@ -22,10 +22,6 @@
     sp_url: "{{ host }}:{{ sp_port }}"
     op_host: "https://{{ hostname }}"
     cert_dir: "{{ home_dir }}/certs"
-
-    op_cert_dir: "{{ cert_dir }}/op"
-    op_cert: "{{ op_cert_dir }}/localhost.crt"
-    op_key: "{{ op_cert_dir }}/localhost.key"
     pyoidc_dir: "{{ home_dir }}/pyoidc"
     op_dir: "{{ pyoidc_dir }}/oidc_example/op2"
     vopaas_dir: "{{ home_dir }}/vopaas"
@@ -37,14 +33,6 @@
   pre_tasks:
     - name: create directory for certs
       file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
-
-    - name: create directory for op certs
-      file: path={{ op_cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
-    - name: copy op cert
-      copy: src=localhost.crt dest={{ op_cert }} owner=vagrant group=vagrant mode=0755
-    - name: copy op private key
-      copy: src=localhost.key dest={{ op_key }} owner=vagrant group=vagrant mode=0755
-
     - name: install apt pkg
       apt: pkg={{ item }} state=present update_cache=yes
       with_items:
@@ -68,6 +56,7 @@
         - python3-pip
         - python3-tk
       sudo: Yes
+
 
   roles:
     - {role: pyff, sudo: yes}

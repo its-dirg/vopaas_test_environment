@@ -1,0 +1,22 @@
+- name: fetch CMservice from github
+  git:
+    repo=https://github.com/its-dirg/CMservice
+    dest={{ cm_dir }}
+    force=yes
+
+- name: Overwrite cm config
+  template:
+    src=settings.cfg.j2
+    dest={{ cm_dir }}/server/settings.cfg
+
+- name: Add public sign key
+  copy: src=certs/vopaas_cm_key.pub dest={{ cm_dir }}/server/keys/sign_key.pub
+
+- name: install requirements
+  command:
+    pip3 install -r {{ cm_dir }}/requirements.txt
+
+- name: install CM from local project
+  command:
+    pip3 install -e .
+    chdir={{ cm_dir }}
