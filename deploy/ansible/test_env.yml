@@ -59,6 +59,13 @@
         - python3-pip
         - python3-tk
       sudo: Yes
+    - name: fetch pysaml2 from github
+      git:
+        repo=https://github.com/its-dirg/pysaml2
+        dest={{ pysaml2_dir }}
+        version=354adc745055cf7434be95839c3e05a28e176748
+        force=yes
+      sudo: Yes
 
 
   roles:
@@ -68,6 +75,6 @@
     - {role: op, sudo: yes}
     - {role: vopaas_proxy, sudo: yes}
     - {role: consent_manager, sudo: yes}
-###    - {role: integration_test, sudo: yes}
+#    - {role: integration_test, sudo: yes}
     - {role: metadata, sudo: yes}
     - {role: startup, sudo: yes}

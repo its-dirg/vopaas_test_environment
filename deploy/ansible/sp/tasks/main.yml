@@ -1,10 +1,3 @@
-- name: fetch pysaml2 from github
-  git:
-    repo=https://github.com/its-dirg/pysaml2
-    dest={{ pysaml2_dir }}
-    version=354adc745055cf7434be95839c3e05a28e176748
-    force=yes
-
 - name: Overwrite sp_conf.py
   template:
     src=sp_conf.py.j2

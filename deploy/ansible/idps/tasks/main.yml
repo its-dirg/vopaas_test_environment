@@ -1,11 +1,3 @@
-- name: fetch pysaml2 from github if it does not exist
-  git:
-    repo=https://github.com/its-dirg/pysaml2
-    dest={{ pysaml2_dir }}
-    version=014d7e2d4bc5d6b749a306cf6716739771c3c988
-    clone=no
-    force=yes
-
 - name: Overwrite idp_1_conf.py
   template:
     src=idp_1_conf.py.j2

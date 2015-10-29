@@ -1,14 +1,14 @@
 - name: Killing pyff
-  action: shell pkill -f pyffd
+  action: shell pkill -KILL pyffd
   ignore_errors: True
 
-#- name: Killing python
-#  action: shell pkill -f python
-#  ignore_errors: True
-#
-#- name: Killing python3
-#  action: shell pkill -f python3
-#  ignore_errors: True
+- name: Killing all python and python3 processes
+  action: shell pkill -KILL python
+  ignore_errors: True
+
+- name: Killing manually processes started with sudo
+  action: shell pkill -KILL sudo
+  ignore_errors: True
 
 - name: Create wait_for_pyff script
   template:
