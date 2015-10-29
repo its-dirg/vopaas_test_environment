@@ -17,6 +17,7 @@
     metadata_dir_idp1: "{{ metadata_static_dir }}/idp1.xml"
     metadata_dir_idp2: "{{ metadata_static_dir }}/idp2.xml"
     cm_dir: "{{ home_dir }}/CMservice"
+    cm_server_dir: "{{ cm_dir }}/server"
 
     hostname: "127.0.0.1"
     host: "http://{{ hostname }}"

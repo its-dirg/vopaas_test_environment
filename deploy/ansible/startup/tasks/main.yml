@@ -58,7 +58,7 @@
 - name: Start CMService
   shell:
     nohup python3 flask_server.py
-    chdir={{ cm_dir }}
+    chdir={{ cm_server_dir }}
 
 - name: Kill proxy
   script: kill_proxy.sh
