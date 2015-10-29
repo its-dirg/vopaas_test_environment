@@ -42,7 +42,7 @@ CONFIG = {
     "cert_file": "pki/mycert.pem",
     "xmlsec_binary": xmlsec_path,
     "metadata": {
-        "remote": [{"url": "{{ pyff_url }}/role/idp.xml", "cert": None}],
+        "remote": [{"url": "{{ pyff_discovery_url }}/role/idp.xml", "cert": None}],
     },
     "name_form": NAME_FORMAT_URI,
         "logger": {

@@ -38,7 +38,7 @@
 
 - name: start SP
   shell:
-    nohup python sp.py -D {{ pyff_url }}/role/idp.ds sp_conf &
+    nohup python sp.py -D {{ pyff_discovery_url }}/role/idp.ds sp_conf &
     chdir={{ sp_dir }}
   poll: 0
 
