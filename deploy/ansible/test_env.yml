@@ -2,14 +2,21 @@
 
   vars:
     home_dir: "/home/vagrant"
+    cert_dir: "{{ home_dir }}/certs"
+    pyoidc_dir: "{{ home_dir }}/pyoidc"
+    op_dir: "{{ pyoidc_dir }}/oidc_example/op2"
+    vopaas_dir: "{{ home_dir }}/vopaas"
+    proxy_dir: "{{ vopaas_dir }}/example"
     pysaml2_dir: "{{ home_dir }}/pysaml2"
+    sp_dir: "{{ pysaml2_dir }}/example/sp-wsgi"
+    idp_dir: "{{ pysaml2_dir }}/example/idp2"
     pyff_dir: "{{ home_dir }}/pyff"
-    metadata_dir_name: "metadata"
-    pyff_metadata_dir: "{{ pyff_dir }}/{{ metadata_dir_name }}"
-    metadata_static_dir: "{{ home_dir }}/{{ metadata_dir_name }}"
+    pyff_metadata_dir: "{{ pyff_dir }}/metadata"
+    metadata_static_dir: "{{ home_dir }}/metadata"
     metadata_dir_sp: "{{ metadata_static_dir }}/sp.xml"
     metadata_dir_idp1: "{{ metadata_static_dir }}/idp1.xml"
     metadata_dir_idp2: "{{ metadata_static_dir }}/idp2.xml"
+
     hostname: "127.0.0.1"
     host: "http://{{ hostname }}"
     pyff_port: "9090"
@@ -19,18 +26,10 @@
     sp_port: "9087"
     op_port: "9086"
     cm_port: "9085"
+    
+    pyff_discovery_url: "{{ host }}:{{ pyff_port }}"    
     cm_url: "https://{{ hostname }}:{{ cm_port }}"
-    pyff_url: "{{ host }}:{{ pyff_port }}"
-    sp_url: "{{ host }}:{{ sp_port }}"
-    op_host: "https://{{ hostname }}"
-    cert_dir: "{{ home_dir }}/certs"
-    pyoidc_dir: "{{ home_dir }}/pyoidc"
-    op_dir: "{{ pyoidc_dir }}/oidc_example/op2"
-    vopaas_dir: "{{ home_dir }}/vopaas"
-    cm_dir: "{{ home_dir }}/consent_manager"
-    proxy_dir: "{{ vopaas_dir }}/example"
-    sp_dir: "{{ pysaml2_dir }}/example/sp-wsgi"
-    idp_dir: "{{ pysaml2_dir }}/example/idp2"
+
 
   pre_tasks:
     - name: create directory for certs
