@@ -25,8 +25,8 @@ class Saml2FrontendModulePlugin(FrontendModulePlugin):
         idpConfig = {
             "entityid": "%s/%s/proxy.xml" % (base_url, RECEIVER),
             "description": "A SAML2SAML proxy",
-            "entity_category": [COC, RESEARCH_AND_EDUCATION, HEI, SFS_1993_1153, NREN,
-                                EU],
+            #"entity_category": [COC, RESEARCH_AND_EDUCATION, HEI, SFS_1993_1153, NREN,
+            #                    EU],
             # "valid_for": 168,
             "service": {
                 "idp": {
@@ -42,7 +42,7 @@ class Saml2FrontendModulePlugin(FrontendModulePlugin):
                             "lifetime": {"minutes": 15},
                             "attribute_restrictions": None,  # means all I have
                             "name_form": NAME_FORMAT_URI,
-                            "entity_categories": ["edugain"],
+                            #"entity_categories": ["edugain"],
                             "fail_on_missing_requested": False
                         },
                     },
