@@ -2,6 +2,14 @@
   action: shell pkill -f pyffd
   ignore_errors: True
 
+#- name: Killing python
+#  action: shell pkill -f python
+#  ignore_errors: True
+#
+#- name: Killing python3
+#  action: shell pkill -f python3
+#  ignore_errors: True
+
 - name: Create wait_for_pyff script
   template:
     src=wait_for_pyff.sh
@@ -18,9 +26,6 @@
     ./wait_for_pyff.sh
     chdir={{ home_dir }}
 
-- name: kill idps
-  script: kill_idps.sh
-
 - name: starting IDP 1
   shell:
     nohup python idp.py idp_1_conf &
@@ -33,17 +38,11 @@
     chdir={{ idp_dir }}
   poll: 0
 
-- name: kill sp
-  script: kill_sp.sh
-
 - name: start SP
   shell:
     nohup python sp.py -D {{ pyff_discovery_url }}/role/idp.ds sp_conf &
     chdir={{ sp_dir }}
   poll: 0
-
-- name: kill OP
-  script: kill_op.sh
 
 - name: start OP
   shell:
@@ -51,17 +50,10 @@
     chdir={{ op_dir }}
   poll: 0
 
-- name: Kill CMservice
-  action: shell pkill flask_server
-  ignore_errors: True
-
 - name: Start CMService
   shell:
-    nohup python3 flask_server.py
+    nohup python3 flask_server.py &
     chdir={{ cm_server_dir }}
-
-- name: Kill proxy
-  script: kill_proxy.sh
 
 - name: start proxy
   shell:

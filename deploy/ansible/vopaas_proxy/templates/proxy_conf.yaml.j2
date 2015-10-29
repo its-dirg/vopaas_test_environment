@@ -16,7 +16,7 @@ CONSENT:
   service.rest_uri: "{{ cm_url }}"
   service.consent_redirect: "{{ cm_url }}/consent"
   endpoint: "handle_consent"
-  sign_key: "pki/mykey.pem"
+  sign_key: "{{ proxy_server_sign_key }}"
   state_enc_key: "7D1ZGckfoiQfxvsK3DLCQFGutA6KM0ZzoSnzB"
   verify_ssl: No
 #--- Server Config ---#

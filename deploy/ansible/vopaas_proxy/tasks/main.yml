@@ -4,6 +4,8 @@
   copy: src=certs/proxy_server.crt dest={{ proxy_server_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy server private key
   copy: src=certs/proxy_server.key dest={{ proxy_server_key }} owner=vagrant group=vagrant mode=0755
+- name: copy signing private key
+  copy: src=certs/vopaas_cm.key dest={{ proxy_server_sign_key }} owner=vagrant group=vagrant mode=0755
 
 - name: create directory for frontend certs
   file: path={{ proxy_cert_frontend_dir }} state=directory owner=vagrant group=vagrant mode=0755
@@ -69,7 +71,7 @@
   command:
     pip3 install -r {{ vopaas_dir }}/requirements.txt
 
-- name: install saas from local project
+- name: install vopaas from local project
   command:
     pip3 install -e .
     chdir={{ vopaas_dir }}

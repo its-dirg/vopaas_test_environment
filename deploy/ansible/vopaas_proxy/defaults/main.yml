@@ -1,6 +1,7 @@
 proxy_cert_server_dir: "{{ cert_dir }}/server"
 proxy_server_cert: "{{ proxy_cert_server_dir }}/proxy_server.crt"
 proxy_server_key: "{{ proxy_cert_server_dir }}/proxy_server.key"
+proxy_server_sign_key: "{{ proxy_cert_server_dir }}/proxy_cm_sign.key"
 
 proxy_cert_frontend_dir: "{{ cert_dir }}/frontend"
 proxy_frontend_cert: "{{ proxy_cert_frontend_dir }}/proxy_frontend.crt"
