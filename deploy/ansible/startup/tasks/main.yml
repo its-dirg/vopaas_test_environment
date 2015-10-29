@@ -51,6 +51,15 @@
     chdir={{ op_dir }}
   poll: 0
 
+- name: Kill CMservice
+  action: shell pkill flask_server
+  ignore_errors: True
+
+- name: Start CMService
+  shell:
+    nohup python3 flask_server.py
+    chdir={{ cm_dir }}
+
 - name: Kill proxy
   script: kill_proxy.sh
 

@@ -18,6 +18,8 @@
     proxy_port: "9091"
     sp_port: "9087"
     op_port: "9086"
+    cm_port: "9085"
+    cm_url: "https://{{ hostname }}:{{ cm_port }}"
     pyff_url: "{{ host }}:{{ pyff_port }}"
     sp_url: "{{ host }}:{{ sp_port }}"
     op_host: "https://{{ hostname }}"
