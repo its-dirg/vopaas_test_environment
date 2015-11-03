@@ -60,7 +60,7 @@
   command: ln -sf /usr/local/share/phantomjs-1.9.8-linux-x86_64/bin/phantomjs /usr/local/bin
 
 - name: Send test_integration to remote host
-  copy:
+  template:
     src=test_integration.py
     dest={{ home_dir }}/test_integration.py
     owner=vagrant
