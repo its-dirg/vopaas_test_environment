@@ -2,7 +2,7 @@
   git:
     repo=https://github.com/its-dirg/CMservice
     dest={{ cm_dir }}
-    version=07d5bb5ebf0622b208411c5c21cec72277e807ec
+    version=b335ac22bcad5010568e39916d8ee2cc5955316a
     force=yes
 
 - name: Overwrite cm config

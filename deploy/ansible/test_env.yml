@@ -19,17 +19,17 @@
     cm_dir: "{{ home_dir }}/CMservice"
     cm_server_dir: "{{ cm_dir }}/server"
 
-    hostname: "127.0.0.1"
+    hostname: "hashog.umdc.umu.se"
     host: "http://{{ hostname }}"
     pyff_port: "9090"
     idp_1_port: "9088"
     idp_2_port: "9089"
-    proxy_port: "9091"
+    proxy_port: "8091"
     sp_port: "9087"
     op_port: "9086"
     cm_port: "9085"
-    
-    pyff_discovery_url: "{{ host }}:{{ pyff_port }}"    
+
+    pyff_discovery_url: "{{ host }}:{{ pyff_port }}"
     cm_url: "https://{{ hostname }}:{{ cm_port }}"
     op_url: "https://{{ hostname }}"
 
@@ -63,7 +63,7 @@
       git:
         repo=https://github.com/its-dirg/pysaml2
         dest={{ pysaml2_dir }}
-        version=354adc745055cf7434be95839c3e05a28e176748
+        version=0b1b3c7f2f92391b08c0c9b64ba2f1d6c6966dfa
         force=yes
       sudo: Yes
 
@@ -75,6 +75,6 @@
     - {role: op, sudo: yes}
     - {role: vopaas_proxy, sudo: yes}
     - {role: consent_manager, sudo: yes}
-#    - {role: integration_test, sudo: yes}
+    - {role: integration_test, sudo: yes}
     - {role: metadata, sudo: yes}
     - {role: startup, sudo: yes}

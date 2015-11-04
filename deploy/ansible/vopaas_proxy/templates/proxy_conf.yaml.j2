@@ -2,12 +2,15 @@
 HOST: "{{ hostname }}"
 PORT: {{ proxy_port }}
 HTTPS: Yes
+INTERNAL_ATTRIBUTES: 'internal_attributes.yaml'
 PLUGIN_PATH:
   - "plugins/backends"
   - "plugins/frontends"
 BACKEND_MODULES:
   - "saml2_backend"
   - "oidc_backend"
+#  - "google_backend"
+#  - "fb_backend"
 FRONTEND_MODULES:
   - "saml2_frontend"
 USER_ID_HASH_SALT: "61a89d2db0b9e1e27d490d050b478fe71f352fddd3528a44157f43e339c6c62d96172bf84233317"
