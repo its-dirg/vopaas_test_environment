@@ -73,17 +73,15 @@
     src=oidc_backend.py.j2
     dest={{ proxy_dir }}/plugins/backends/oidc_backend.py
 
-- name: Overwrite facebook backend
-  template:
-    src=fb_backend.py.j2
-    dest={{ proxy_dir }}/plugins/backends/fb_backend.py
-  ignore_errors: True
-
-- name: Overwrite google backend
-  template:
-    src=google_backend.py.j2
-    dest={{ proxy_dir }}/plugins/backends/google_backend.py
-  ignore_errors: True
+#- name: Overwrite facebook backend
+#  template:
+#    src=fb_backend.py.j2
+#    dest={{ proxy_dir }}/plugins/backends/fb_backend.py
+#
+#- name: Overwrite google backend
+#  template:
+#    src=google_backend.py.j2
+#    dest={{ proxy_dir }}/plugins/backends/google_backend.py
 
 - name: install example requirements
   command:
