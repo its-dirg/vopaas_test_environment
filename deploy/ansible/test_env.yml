@@ -19,12 +19,12 @@
     cm_dir: "{{ home_dir }}/CMservice"
     cm_server_dir: "{{ cm_dir }}/server"
 
-    hostname: "hashog.umdc.umu.se"
+    hostname: "127.0.0.1"
     host: "http://{{ hostname }}"
     pyff_port: "9090"
     idp_1_port: "9088"
     idp_2_port: "9089"
-    proxy_port: "8091"
+    proxy_port: "9091"
     sp_port: "9087"
     op_port: "9086"
     cm_port: "9085"
@@ -33,48 +33,48 @@
     cm_url: "https://{{ hostname }}:{{ cm_port }}"
     op_url: "https://{{ hostname }}"
 
-  pre_tasks:
-    - name: create directory for certs
-      file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
-    - name: install apt pkg
-      apt: pkg={{ item }} state=present update_cache=yes
-      with_items:
-        - build-essential
-        - git
-        - python-dev
-        - libssl-dev
-        - libffi-dev
-        - xmlsec1
-        - libxml2
-        - libxslt1.1
-        - libyaml-dev
-        - libxml2-dev
-        - libxslt1-dev
-        - libxslt-dev
-        - vim
-        - python-setuptools
-        - python-libxslt1
-        - python-libxml2
-        - python-pip
-        - python3-pip
-        - python3-tk
-      sudo: Yes
-    - name: fetch pysaml2 from github
-      git:
-        repo=https://github.com/its-dirg/pysaml2
-        dest={{ pysaml2_dir }}
-        version=0b1b3c7f2f92391b08c0c9b64ba2f1d6c6966dfa
-        force=yes
-      sudo: Yes
+#  pre_tasks:
+#    - name: create directory for certs
+#      file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
+#    - name: install apt pkg
+#      apt: pkg={{ item }} state=present update_cache=yes
+#      with_items:
+#        - build-essential
+#        - git
+#        - python-dev
+#        - libssl-dev
+#        - libffi-dev
+#        - xmlsec1
+#        - libxml2
+#        - libxslt1.1
+#        - libyaml-dev
+#        - libxml2-dev
+#        - libxslt1-dev
+#        - libxslt-dev
+#        - vim
+#        - python-setuptools
+#        - python-libxslt1
+#        - python-libxml2
+#        - python-pip
+#        - python3-pip
+#        - python3-tk
+#      sudo: Yes
+#    - name: fetch pysaml2 from github
+#      git:
+#        repo=https://github.com/its-dirg/pysaml2
+#        dest={{ pysaml2_dir }}
+#        version=0b1b3c7f2f92391b08c0c9b64ba2f1d6c6966dfa
+#        force=yes
+#      sudo: Yes
 
 
   roles:
-    - {role: pyff, sudo: yes}
-    - {role: sp, sudo: yes}
-    - {role: idps, sudo: yes}
-    - {role: op, sudo: yes}
-    - {role: vopaas_proxy, sudo: yes}
-    - {role: consent_manager, sudo: yes}
-    - {role: integration_test, sudo: yes}
-    - {role: metadata, sudo: yes}
+#    - {role: pyff, sudo: yes}
+#    - {role: sp, sudo: yes}
+#    - {role: idps, sudo: yes}
+#    - {role: op, sudo: yes}
+#    - {role: vopaas_proxy, sudo: yes}
+#    - {role: consent_manager, sudo: yes}
+#    - {role: integration_test, sudo: yes}
+#    - {role: metadata, sudo: yes}
     - {role: startup, sudo: yes}
