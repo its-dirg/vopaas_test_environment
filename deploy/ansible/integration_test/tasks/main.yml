@@ -1,46 +1,18 @@
-- name: install selenium
-  pip:
-    name=selenium
+- name: install binary dependencies
+  apt: pkg={{ item }} state=present update_cache=yes
+  with_items:
+    - chrpath
+    - libxft-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - libfontconfig1
+    - libfontconfig1-dev
 
-- name: install pytest
-  pip:
-    name=pytest
-
-- name: update apt-get
-  apt:
-    update_cache=yes
-
-- name: install build-essential
-  apt:
-    name=build-essential
-
-- name: install chrpath
-  apt:
-    name=chrpath
-
-- name: install libssl-dev
-  apt:
-    name=libssl-dev
-
-- name: install libxft-dev
-  apt:
-    name=libxft-dev
-
-- name: install libfreetype6
-  apt:
-    name=libfreetype6
-
-- name: install libfreetype6-dev
-  apt:
-    name=libfreetype6-dev
-
-- name: install libfontconfig1
-  apt:
-    name=libfontconfig1
-
-- name: install libfontconfig1-dev
-  apt:
-    name=libfontconfig1-dev
+- name: install python dependencies
+  shell: pip3 install {{ item }}
+  with_items:
+    - selenium
+    - pytest
 
 - name: Download phantomjs from bitbucket
   shell:
@@ -75,3 +47,9 @@
 
 - name: Change premissions for files in .cache
   command: sudo find /home/vagrant/.cache/ -type f -exec chmod 755 {} ";"
+
+- name: Run tests
+  shell:
+    python3 -m pytest test_integration.py
+    chdir={{ home_dir }}
+  ignore_errors: Yes

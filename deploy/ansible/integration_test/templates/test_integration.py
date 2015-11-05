@@ -1,18 +1,36 @@
+# -*- coding: utf-8 -*-
 import copy
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import pytest
 
 __author__ = 'danielevertsson'
 
 
 OP_PROFILE_DIANA = {
     "givenName": "Diana",
-    "mail": "diana@example.org",
-    "eduPersonNickname": "Diana",
-    "osiOtherEmail": "false",
-    "eduPersonTargetedID": None
+    "displayName": "Dinka",
+    "cn": "Diana Krall",
+    "postalAddress": 'UmeÃ¥ Universitet',
+    "eduPersonTargetedID": None,
+    "email": "diana@example.org",
+    "sn": "Krall",
 }
 
+IDP_PROFILE_TESTUSER = {
+    "givenName": "Test",
+    "eduPersonTargetedID": None,
+    "displayName": "Test Testsson",
+    "sn": "Testsson",
+    "email": "mail"
+}
+
+def _consent(driver, given=True):
+    buttons = driver.find_elements_by_tag_name("button")
+    for button in buttons:
+        if button.get_attribute("value") == ("Yes" if given else "No"):
+            button.click()
+            break
 
 class TestVOPaaS:
     def test_phantom_js(self):
@@ -24,10 +42,14 @@ class TestVOPaaS:
         image = driver.find_element_by_id("hplogo")
         assert image.text == "Sverige"
 
-    def test_login_to_idp_1(self):
+    @pytest.mark.parametrize("give_consent", [
+        False,
+        True,
+    ])
+    def test_login_to_idp_1(self, give_consent):
         driver = webdriver.PhantomJS(executable_path="/usr/local/bin/phantomjs",
                                      service_args=['--ignore-ssl-errors=true'])
-        driver.get("http://{{ hostname }}:9087")
+        driver.get("{{ host }}:{{ sp_port }}")
         driver.find_element_by_id("to_list").click()
 
         dropdown = driver.find_element_by_id("thelist")
@@ -38,25 +60,28 @@ class TestVOPaaS:
 
         driver.find_element_by_id("proceed").click()
         driver.find_element_by_name("login").clear()
-        driver.find_element_by_name("login").send_keys("roland")
+        driver.find_element_by_name("login").send_keys("testuser")
         driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("dianakra")
+        driver.find_element_by_name("password").send_keys("qwerty")
         driver.find_element_by_name("form.submitted").click()
-        # driver.get("http://127.0.0.1:9087")
+
+        _consent(driver, give_consent)
 
         table_row = driver.find_elements(By.TAG_NAME, "tr")
-        found_match = False
-        for row in table_row:
-            cell = row.find_elements(By.TAG_NAME, "td")
-            if cell[0].text == "P. Roland Hedberg":
-                found_match = True
-        assert found_match
+        if give_consent:
+            compare_table_with_profile(table_row, IDP_PROFILE_TESTUSER)
+        else:
+            assert not table_row
 
-    def test_login_to_OP(self):
+    @pytest.mark.parametrize("give_consent", [
+        False,
+        True,
+    ])
+    def test_login_to_OP(self, give_consent):
         driver = webdriver.PhantomJS(executable_path="/usr/local/bin/phantomjs",
                                      service_args=['--ignore-ssl-errors=true'])
         # Go to SP
-        driver.get("http://{{ hostname }}:{{ sp_port }}")
+        driver.get("{{ host }}:{{ sp_port }}")
 
         # Pick frontend in DS
         driver.find_element_by_id("to_list").click()
@@ -74,24 +99,27 @@ class TestVOPaaS:
         driver.find_element_by_name("password").send_keys("krall")
         driver.find_element_by_name("form.commit").click()
 
-        # Give consent
-        buttons = driver.find_elements_by_tag_name("button")
-        for button in buttons:
-            if button.get_attribute("value") == "Yes":
-                button.click()
-                break
+        _consent(driver, give_consent)
 
         # Assert return values
-        diana_profile = copy.deepcopy(OP_PROFILE_DIANA)
         table_row = driver.find_elements(By.TAG_NAME, "tr")
-        for row in table_row:
-            cell_header = row.find_elements(By.TAG_NAME, "th")[0].text
-            cell_value = row.find_elements(By.TAG_NAME, "td")[0].text
-            assert cell_header in diana_profile, "Received unexpected parameter: %s" % cell_header
-            if diana_profile[cell_header] is not None:
-                expected_value = diana_profile.pop(cell_header, None)
-                assert cell_value == expected_value, "The received parameter value did not match the expected " \
-                                                     "value: '%s' != '%s'" % (cell_value, expected_value)
-        # Assert all parameters was received
-        assert not diana_profile, "Did not receive all expected parameters: %s" % list(diana_profile.keys())
 
+        if give_consent:
+            # If given consent, assert all attributes was received
+            compare_table_with_profile(table_row, OP_PROFILE_DIANA)
+        else:
+            # If not given consent, assert no attributes was received
+            assert not table_row
+
+def compare_table_with_profile(table, profile):
+    profile = copy.deepcopy(profile)
+    for row in table:
+        cell_header = row.find_elements(By.TAG_NAME, "th")[0].text
+        cell_value = row.find_elements(By.TAG_NAME, "td")[0].text
+        assert cell_header in profile, "Received unexpected parameter: %s" % cell_header
+        expected_value = profile.pop(cell_header, None)
+        if expected_value is not None:
+            assert cell_value == expected_value, "The received parameter value did not match the expected " \
+                                                 "value: '%s' != '%s'" % (cell_value, expected_value)
+    # Assert all parameters was received
+    assert not profile, "Did not receive all expected parameters: %s" % list(profile.keys())
