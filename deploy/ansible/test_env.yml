@@ -63,7 +63,7 @@
       git:
         repo=https://github.com/its-dirg/pysaml2
         dest={{ pysaml2_dir }}
-        version=0b1b3c7f2f92391b08c0c9b64ba2f1d6c6966dfa
+        version=5a9b74bb8bdc3e24ab77c9397a6fa9a0a74595e4
         force=yes
       sudo: Yes
 
