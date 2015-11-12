@@ -32,6 +32,22 @@ def _consent(driver, given=True):
             button.click()
             break
 
+def _discovery_server(driver):
+    driver.find_element_by_id("to_list").click()
+    dropdown = driver.find_element_by_id("thelist")
+    for option in dropdown.find_elements_by_tag_name('option'):
+        if option.text == "My IDP NO.1":
+            option.click()
+            break
+    driver.find_element_by_id("proceed").click()
+
+def _idp_login_form( driver):
+    driver.find_element_by_name("login").clear()
+    driver.find_element_by_name("login").send_keys("testuser")
+    driver.find_element_by_name("password").clear()
+    driver.find_element_by_name("password").send_keys("qwerty")
+    driver.find_element_by_name("form.submitted").click()
+
 class TestVOPaaS:
     def test_phantom_js(self):
         try:
@@ -50,21 +66,9 @@ class TestVOPaaS:
         driver = webdriver.PhantomJS(executable_path="/usr/local/bin/phantomjs",
                                      service_args=['--ignore-ssl-errors=true'])
         driver.get("{{ host }}:{{ sp_port }}")
-        driver.find_element_by_id("to_list").click()
 
-        dropdown = driver.find_element_by_id("thelist")
-        for option in dropdown.find_elements_by_tag_name('option'):
-            if option.text == "My IDP NO.1":
-                option.click()
-                break
-
-        driver.find_element_by_id("proceed").click()
-        driver.find_element_by_name("login").clear()
-        driver.find_element_by_name("login").send_keys("testuser")
-        driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("qwerty")
-        driver.find_element_by_name("form.submitted").click()
-
+        _discovery_server(driver)
+        _idp_login_form(driver)
         _consent(driver, give_consent)
 
         table_row = driver.find_elements(By.TAG_NAME, "tr")
@@ -72,6 +76,18 @@ class TestVOPaaS:
             compare_table_with_profile(table_row, IDP_PROFILE_TESTUSER)
         else:
             assert not table_row
+
+    def test_restore_state_at_different_proxy(self):
+        driver = webdriver.PhantomJS(executable_path="/usr/local/bin/phantomjs",
+                                     service_args=['--ignore-ssl-errors=true'])
+        driver.get("{{ host }}:{{ sp_2_port }}?IdpQuery=https%3a%2f%2f127.0.0.1%3a9092%2fSaml2IDP"
+                   "%2fproxy.xml%2faHR0cDovLzEyNy4wLjAuMTo5MDg4L2lkcDEueG1s")
+
+        _idp_login_form(driver)
+        _consent(driver, True)
+
+        table_row = driver.find_elements(By.TAG_NAME, "tr")
+        compare_table_with_profile(table_row, IDP_PROFILE_TESTUSER)
 
     @pytest.mark.parametrize("give_consent", [
         False,
