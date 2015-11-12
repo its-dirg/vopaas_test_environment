@@ -4,10 +4,22 @@
     dest={{ sp_dir }}/sp_conf.py
     force=yes
 
+- name: Overwrite sp_2_conf.py
+  template:
+    src=sp_2_conf.py.j2
+    dest={{ sp_dir }}/sp_2_conf.py
+    force=yes
+
 - name: Overwrite service_conf.py
   template:
     src=service_conf.py.j2
     dest={{ sp_dir }}/service_conf.py
+    force=yes
+
+- name: Overwrite service_2_conf.py
+  template:
+    src=service_2_conf.py.j2
+    dest={{ sp_dir }}/service_2_conf.py
     force=yes
 
 - name: install cryptography

@@ -20,6 +20,16 @@
     make_metadata.py sp_conf.py > {{ pyff_metadata_dir }}/sp.xml
     chdir={{ sp_dir }}
 
+- name: Generate sp_2 metadata
+  shell:
+    make_metadata.py sp_2_conf.py > {{ metadata_dir_sp_2 }}
+    chdir={{ sp_dir }}
+
+- name: Generate sp_2 pyff metadata
+  shell:
+    make_metadata.py sp_2_conf.py > {{ pyff_metadata_dir }}/sp_2.xml
+    chdir={{ sp_dir }}
+
 - name: Generate idp_1 metadata
   shell:
     make_metadata.py idp_1_conf.py > {{ metadata_dir_idp1 }}
@@ -35,8 +45,23 @@
     make_saml_metadata.py -b -o {{ pyff_metadata_dir }} proxy_conf.yaml
     chdir={{ proxy_dir }}
 
-- name: Generate proxy backend metadata
+- name: Generate proxy frontend metadata
   shell:
     make_vopaas_metadata.py -o {{ pyff_metadata_dir }} proxy_conf.yaml
+    chdir={{ proxy_dir }}
+
+- name: Generate proxy 2 backend metadata
+  shell:
+    make_saml_metadata.py -b -o {{ metadata_static_dir }} proxy_2_conf.yaml
+    chdir={{ proxy_dir }}
+
+- name: Move and rename proxy 2 backend metadata
+  shell:
+    mv Saml2_backend_metadata.xml {{proxy_2_metadata_path}}
+    chdir={{ metadata_static_dir }}
+
+- name: Generate proxy 2 frontend metadata
+  shell:
+    make_vopaas_metadata.py -o {{ metadata_static_dir }} proxy_2_conf.yaml
     chdir={{ proxy_dir }}
 

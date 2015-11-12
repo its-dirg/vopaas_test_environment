@@ -44,6 +44,12 @@
     chdir={{ sp_dir }}
   poll: 0
 
+- name: start SP_2
+  shell:
+    nohup python sp.py -C service_2_conf sp_2_conf &
+    chdir={{ sp_dir }}
+  poll: 0
+
 - name: start OP
   shell:
     nohup python3 server.py -p {{ op_port }} config &
@@ -58,5 +64,11 @@
 - name: start proxy
   shell:
     nohup python3 proxy_server.py proxy_conf.yaml &
+    chdir={{ proxy_dir }}
+  poll: 0
+
+- name: start second proxy instance
+  shell:
+    nohup python3 proxy_server.py proxy_2_conf.yaml &
     chdir={{ proxy_dir }}
   poll: 0

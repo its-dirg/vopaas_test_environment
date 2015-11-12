@@ -56,7 +56,7 @@ class Saml2FrontendModulePlugin(FrontendModulePlugin):
             "key_file": "{{ proxy_frontend_key }}",
             "cert_file": "{{ proxy_frontend_cert }}",
             "metadata": {
-                "local": ["{{ metadata_dir_sp }}"],
+                "local": ["{{ metadata_dir_sp }}", "{{ metadata_dir_sp_2 }}"],
             },
             # This database holds the map between a subjects local identifier and
             # the identifier returned to a SP

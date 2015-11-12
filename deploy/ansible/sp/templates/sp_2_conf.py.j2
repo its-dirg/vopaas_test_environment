@@ -11,10 +11,10 @@ except ImportError:
 xmlsec_path = '/usr/bin/xmlsec1'
 
 # Make sure the same port number appear in service_conf.py
-BASE = "http://{{ hostname }}:{{ sp_port }}"
+BASE = "http://{{ hostname }}:{{ sp_2_port }}"
 
 CONFIG = {
-    "entityid": "%s/%ssp.xml" % (BASE, ""),
+    "entityid": "%s/%ssp_2.xml" % (BASE, ""),
     'entity_category': [COC],
     "description": "Example SP",
     "service": {
@@ -42,8 +42,10 @@ CONFIG = {
     "cert_file": "pki/mycert.pem",
     "xmlsec_binary": xmlsec_path,
     "metadata": {
-        "remote": [{"url": "{{ pyff_discovery_url }}/role/idp.xml", "cert": None}],
-        #"local": ["/home/vagrant/pyff/metadata/proxy_front0_metadata.xml"],
+        "local": [
+            "/home/vagrant/metadata/proxy_front0_metadata.xml", #proxy_2
+            "/home/vagrant/pyff/metadata/proxy_front0_metadata.xml" #proxy_1
+        ],
     },
     "name_form": NAME_FORMAT_URI,
         "logger": {

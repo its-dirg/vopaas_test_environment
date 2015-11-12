@@ -25,7 +25,7 @@
   git:
     repo=https://github.com/its-dirg/VOPaaS
     dest={{ vopaas_dir }}
-    version=4c413ee638df813c5a2394255da8740a5ed45bdd
+    version=0a2f79edc23a1eadac80d9dce9355ae332c70753
     force=yes
 
 - name: install example requirements
@@ -57,6 +57,16 @@
   template:
     src=proxy_conf.yaml.j2
     dest={{ proxy_dir }}/proxy_conf.yaml
+
+- name: Add proxy_2_conf.yaml
+  template:
+    src=proxy_2_conf.yaml.j2
+    dest={{ proxy_dir }}/proxy_2_conf.yaml
+
+- name: Overwrite saml2_backend_node_redirect.py
+  template:
+    src=saml2_backend_node_redirect.py.j2
+    dest={{ proxy_dir }}/plugins/backends/saml2_backend_node_redirect.py
 
 - name: Overwrite saml2_backend.py
   template:

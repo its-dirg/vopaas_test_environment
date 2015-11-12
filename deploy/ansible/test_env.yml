@@ -14,8 +14,10 @@
     pyff_metadata_dir: "{{ pyff_dir }}/metadata"
     metadata_static_dir: "{{ home_dir }}/metadata"
     metadata_dir_sp: "{{ metadata_static_dir }}/sp.xml"
+    metadata_dir_sp_2: "{{ metadata_static_dir }}/sp_2.xml"
     metadata_dir_idp1: "{{ metadata_static_dir }}/idp1.xml"
     metadata_dir_idp2: "{{ metadata_static_dir }}/idp2.xml"
+    proxy_2_metadata_path: "{{ pyff_metadata_dir }}/proxy_2_Saml2_backend_metadata.xml"
     cm_dir: "{{ home_dir }}/CMservice"
     cm_server_dir: "{{ cm_dir }}/server"
 
@@ -25,7 +27,9 @@
     idp_1_port: "9088"
     idp_2_port: "9089"
     proxy_port: "9091"
+    proxy_2_port: "9092"
     sp_port: "9087"
+    sp_2_port: "9093"
     op_port: "9086"
     cm_port: "9085"
 
@@ -63,7 +67,7 @@
       git:
         repo=https://github.com/its-dirg/pysaml2
         dest={{ pysaml2_dir }}
-        version=0b1b3c7f2f92391b08c0c9b64ba2f1d6c6966dfa
+        version=b79d5241b530dafae034c7024dba501ee938d6c9
         force=yes
       sudo: Yes
 
