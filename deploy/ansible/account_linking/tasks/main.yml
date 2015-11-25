@@ -1,0 +1,27 @@
+- name: fetch ALservice from github
+  git:
+    repo=https://github.com/its-dirg/ALservice
+    dest={{ al_dir }}
+    version=502b31a4bd7c0af68236e6bd9bc81a362a4f75f8
+    force=yes
+
+- name: Overwrite al config
+  template:
+    src=settings.cfg.j2
+    dest={{ al_dir }}/server/settings.cfg
+
+- name: Add message file
+  copy: src=message.txt dest={{ al_server_dir }}/message.txt mode=0755
+
+- name: Add public sign key
+  copy: src=certs/vopaas_cm.pub dest={{ al_dir }}/server/keys/sign_key.pub
+
+- name: install CM from local project
+  command:
+    pip3 install -e .
+    chdir={{ al_dir }}
+
+- name: Create translation files for ALService
+  shell:
+    ./3_add_translations.sh
+    chdir={{ al_server_dir }}

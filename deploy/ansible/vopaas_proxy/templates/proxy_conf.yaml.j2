@@ -3,6 +3,8 @@ HOST: "{{ hostname }}"
 PORT: {{ proxy_port }}
 HTTPS: Yes
 INTERNAL_ATTRIBUTES: 'internal_attributes.yaml'
+COOKIE_STATE_NAME: "VOPAAS_STATE"
+STATE_ENCRYPTION_KEY: "asdASD123"
 PLUGIN_PATH:
   - "plugins/backends"
   - "plugins/frontends"
@@ -16,12 +18,19 @@ FRONTEND_MODULES:
 USER_ID_HASH_SALT: "61a89d2db0b9e1e27d490d050b478fe71f352fddd3528a44157f43e339c6c62d96172bf84233317"
 CONSENT:
   enable: Yes
-  service.rest_uri: "{{ cm_url }}"
-  service.consent_redirect: "{{ cm_url }}/consent"
+  rest_uri: "{{ cm_url }}"
+  redirect: "{{ cm_url }}/consent"
   endpoint: "handle_consent"
   sign_key: "{{ proxy_server_sign_key }}"
-  state_enc_key: "7D1ZGckfoiQfxvsK3DLCQFGutA6KM0ZzoSnzB"
   verify_ssl: No
+ACCOUNT_LINKING:
+  enable: Yes
+  rest_uri: "{{ al_url }}"
+  redirect: "{{ al_url }}/approve"
+  endpoint: "handle_account_linking"
+  sign_key: "pki/account_linking.key"
+  verify_ssl: No
+
 #--- Server Config ---#
 SERVER_CERT: "{{ proxy_server_cert }}"
 SERVER_KEY: "{{ proxy_server_key }}"

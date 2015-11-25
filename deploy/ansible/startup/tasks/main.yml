@@ -55,8 +55,13 @@
     nohup python3 flask_server.py &
     chdir={{ cm_server_dir }}
 
+- name: Start ALService
+  shell:
+    nohup python3 flask_server.py &
+    chdir={{ al_server_dir }}
+
 - name: start proxy
   shell:
-    nohup python3 proxy_server.py proxy_conf.yaml &
-    chdir={{ proxy_dir }}
+    nohup python3 {{ vopaas_src_dir }}/src/vopaas/vopaas_server.py proxy_conf.yaml &
+    chdir={{ vopaas_dir }}
   poll: 0

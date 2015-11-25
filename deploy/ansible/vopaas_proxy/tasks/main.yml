@@ -1,5 +1,17 @@
-- name: create directory for server certs
-  file: path={{ proxy_cert_server_dir }} state=directory owner=vagrant group=vagrant mode=0755
+- name: Create directories
+  file: path={{ item }} state=directory owner=vagrant group=vagrant mode=0755
+  with_items:
+    - "{{ vopaas_dir }}"
+    - "{{ proxy_cert_server_dir }}"
+    - "{{ proxy_cert_frontend_dir }}"
+    - "{{ proxy_cert_backend_dir }}"
+    - "{{ vopaas_dir }}/plugins/frontends"
+    - "{{ vopaas_dir }}/plugins/backends"
+
+#- name: create directory for proxy
+#  file: path={{ vopaas_dir }} state=directory owner=vagrant group=vagrant mode=0755
+#- name: create directory for server certs
+#  file: path={{ proxy_cert_server_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy server cert
   copy: src=certs/proxy_server.crt dest={{ proxy_server_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy server private key
@@ -7,30 +19,33 @@
 - name: copy signing private key
   copy: src=certs/vopaas_cm.key dest={{ proxy_server_sign_key }} owner=vagrant group=vagrant mode=0755
 
-- name: create directory for frontend certs
-  file: path={{ proxy_cert_frontend_dir }} state=directory owner=vagrant group=vagrant mode=0755
+#- name: create directory for frontend certs
+#  file: path={{ proxy_cert_frontend_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy frontend cert
   copy: src=certs/proxy_frontend.crt dest={{ proxy_frontend_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy frontend private key
   copy: src=certs/proxy_frontend.key dest={{ proxy_frontend_key }} owner=vagrant group=vagrant mode=0755
 
-- name: create directory for backend certs
-  file: path={{ proxy_cert_backend_dir }} state=directory owner=vagrant group=vagrant mode=0755
+#- name: create directory for backend certs
+#  file: path={{ proxy_cert_backend_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy backend cert
   copy: src=certs/proxy_backend.crt dest={{ proxy_backend_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy backend private key
   copy: src=certs/proxy_backend.key dest={{ proxy_backend_key }} owner=vagrant group=vagrant mode=0755
 
+
+
+
 - name: fetch VOPaaS from github
   git:
     repo=https://github.com/its-dirg/VOPaaS
-    dest={{ vopaas_dir }}
-    version=4c413ee638df813c5a2394255da8740a5ed45bdd
+    dest={{ vopaas_src_dir }}
+    version=21e9a4ecac72a0b10300bc79b518353e43786890
     force=yes
 
-- name: install example requirements
+- name: install requirements
   command:
-    pip3 install -r {{ vopaas_dir }}/requirements.txt
+    pip3 install -r {{ vopaas_src_dir }}/requirements.txt
 
 - name: install cryptography
   command:
@@ -44,50 +59,50 @@
   command:
     pip3 install PyYAML
 
-- name: install pysaml
-  command:
-    pip3 install git+https://github.com/rohe/pysaml2
+#- name: install pysaml
+#  command:
+#    pip3 install git+https://github.com/rohe/pysaml2
 
 - name: Overwrite internal_attributes.yaml
   template:
     src=internal_attributes.yaml.j2
-    dest={{ proxy_dir }}/internal_attributes.yaml
+    dest={{ vopaas_dir }}/internal_attributes.yaml
 
 - name: Overwrite proxy_conf.yaml
   template:
     src=proxy_conf.yaml.j2
-    dest={{ proxy_dir }}/proxy_conf.yaml
+    dest={{ vopaas_dir }}/proxy_conf.yaml
 
 - name: Overwrite saml2_backend.py
   template:
     src=saml2_backend.py.j2
-    dest={{ proxy_dir }}/plugins/backends/saml2_backend.py
+    dest={{ vopaas_dir }}/plugins/backends/saml2_backend.py
 
 - name: Overwrite saml2_frontend.py
   template:
     src=saml2_frontend.py.j2
-    dest={{ proxy_dir }}/plugins/frontends/saml2_frontend.py
+    dest={{ vopaas_dir }}/plugins/frontends/saml2_frontend.py
 
 - name: Overwrite op backend
   template:
     src=oidc_backend.py.j2
-    dest={{ proxy_dir }}/plugins/backends/oidc_backend.py
+    dest={{ vopaas_dir }}/plugins/backends/oidc_backend.py
 
 #- name: Overwrite facebook backend
 #  template:
 #    src=fb_backend.py.j2
-#    dest={{ proxy_dir }}/plugins/backends/fb_backend.py
+#    dest={{ vopaas_dir }}/plugins/backends/fb_backend.py
 #
 #- name: Overwrite google backend
 #  template:
 #    src=google_backend.py.j2
-#    dest={{ proxy_dir }}/plugins/backends/google_backend.py
+#    dest={{ vopaas_dir }}/plugins/backends/google_backend.py
 
-- name: install example requirements
-  command:
-    pip3 install -r {{ vopaas_dir }}/requirements.txt
+#- name: install example requirements
+#  command:
+#    pip3 install -r {{ vopaas_src_dir }}/requirements.txt
 
 - name: install vopaas from local project
   command:
     pip3 install -e .
-    chdir={{ vopaas_dir }}
+    chdir={{ vopaas_src_dir }}
