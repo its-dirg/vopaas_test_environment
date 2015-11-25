@@ -4,7 +4,7 @@ In this section all necessary configuration is described.
 
 ## Proxy configuration
 
-| Parameter name | Data type | Example input | Description |
+| Parameter name | Data type | Example value | Description |
 | -------------- | --------- | ------------- | ----------- |
 | `HOST` | string | `127.0.0.1` | hostname or IP address |
 | `PORT` | int | `8080` | port number |
@@ -24,7 +24,7 @@ In this section all necessary configuration is described.
 | `ACCOUNT_LINKING` | dict | see configuration of [Additional Services](#additional-services) | optional configuration of account linking service |
 
 ### Additional services
-| Parameter name | Data type | Example input | Description |
+| Parameter name | Data type | Example value | Description |
 | -------------- | --------- | ------------- | ----------- |
 | `enable` | bool | `Yes` | whether the service should be used |
 | `rest_uri` | string | `https://localhost` | url to the REST endpoint of the service |
@@ -34,3 +34,36 @@ In this section all necessary configuration is described.
 | `verify_ssl` | bool | `No` | whether the HTTPS certificate of the service should be verified when doing requests to it |
 
 If using the [CMService](https://github.com/its-dirg/CMservice) for consent management and the [ALService](https://github.com/its-dirg/ALservice) for account linking, the `redirect` parameter should be `https://<host>/consent` and `https://<host>/approve` in the respective configuration entry.
+
+
+## Frontend configuration
+
+One frontend plugin is bundled with the VOPaaS proxy, a SAML2 plugin making the
+proxy look as a SAML2 Identity Provider (IdP) accepting authentication requests
+from SAML2 Service Providers (SP).
+
+### SAML2 frontend
+
+| Parameter name | Data type | Example value | Description |
+| -------------- | --------- | ------------- | ----------- |
+| `MODULE` | python module | `VOPaaSSamlFrontend` | python module backing the plugin |
+| `RECEIVER` | string | `VOPaaSSamlFrontend` | name of the frontend used as part of the path in the endpoints this frontend publishes |
+| `ENDPOINTS` | dict | `{"single_sign_on_service": {saml2.BINDING_HTTP_REDIRECT: "sso/redirect", saml2.BINDING_HTTP_POST: "sso/post"}}` | mapping of SAML2 request binding to url path |
+
+#### IdP configuration
+
+**TODO** how is the final entity id computed/why does it contain seemingly random characters?
+
+**TODO** how should SP metadata be handled in production? can VOPaaS reload the specified metadata file at certain intervals or should we use MDX or something else?, see `metadata` param in table below
+
+**TODO** should there be any default "attribute_restrictions"?
+**TODO** is the default assertion lifetime reasonable?
+**TODO** contact information (organization, tech support, etc?) in configuration
+
+Keys in the Saml2FrontendModulePlugin().idpConfig necessary to customize:
+
+| Parameter name | Data type | Example value | Description |
+| -------------- | --------- | ------------- | ----------- |
+| `key_file` | string | `pki/frontend.key` | path to private key used for signing the SAML2 assertions |
+| `cert_file` | string | `pki/frontend.crt` | path to certificate for the public key associated with the private key in `key_file`
+| `metadata["local"]` | string[] | `["metadata/sp.xml"]` | list of paths to metadata for all service providers connecting to the proxy |
