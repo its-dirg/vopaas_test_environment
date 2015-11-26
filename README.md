@@ -11,6 +11,8 @@
 
 In this section all necessary configuration is described.
 
+** TODO change all example/default confiurations for VOPaaS to YAML **
+
 ## Proxy configuration
 
 | Parameter name | Data type | Example value | Description |
@@ -56,7 +58,7 @@ from SAML2 Service Providers (SP).
 | -------------- | --------- | ------------- | ----------- |
 | `MODULE` | python module | `VOPaaSSamlFrontend` | python module backing the plugin |
 | `RECEIVER` | string | `VOPaaSSamlFrontend` | name of the frontend used as part of the path in the endpoints this frontend publishes |
-| `ENDPOINTS` | dict | `{"single_sign_on_service": {saml2.BINDING_HTTP_REDIRECT: "sso/redirect", saml2.BINDING_HTTP_POST: "sso/post"}}` | mapping of SAML2 request binding to url path |
+| `ENDPOINTS` | dict | `{single_sign_on_service: {saml2.BINDING_HTTP_REDIRECT: sso/redirect, saml2.BINDING_HTTP_POST: sso/post}}` | mapping of SAML2 request binding to url path |
 
 #### IdP configuration
 
@@ -74,7 +76,7 @@ Keys in the Saml2FrontendModulePlugin().idp_config necessary to customize:
 | -------------- | --------- | ------------- | ----------- |
 | `key_file` | string | `pki/frontend.key` | path to private key used for signing the SAML2 assertions |
 | `cert_file` | string | `pki/frontend.crt` | path to certificate for the public key associated with the private key in `key_file` |
-| `metadata["local"]` | string[] | `["metadata/sp.xml"]` | list of paths to metadata for all service providers connecting to the proxy |
+| `metadata["local"]` | string[] | `[metadata/sp.xml]` | list of paths to metadata for all service providers connecting to the proxy |
 
 ## Backend configuration
 
@@ -99,8 +101,8 @@ Keys in the Keys in the Saml2BackendModulePlugin().sp_config necessary to custom
 | -------------- | --------- | ------------- | ----------- |
 | `key_file` | string | `pki/backend.key` | path to private key used for signing the SAML authentication requests |
 | `cert_file` | string | `pki/backend.crt` | path to certificate for the public key associated with the private key in `key_file` |
-| `organization` | dict | `{"display_name": "Example Identities", name": "Example Identities Organization", "url": "https://www.example.com"}` | information about the organization, will be published in the SAML metadata |
-| `contact_person` | dict[] | `{"contact_type": "technical", "given_name": "Someone Technical", "email_address": "technical@example.com"}` | list of contact information, will be published in the SAML metadata |
+| `organization` | dict | `{display_name: Example Identities, name: Example Identities Organization, url: https://www.example.com}` | information about the organization, will be published in the SAML metadata |
+| `contact_person` | dict[] | `{contact_type: technical, given_name: Someone Technical, email_address: technical@example.com}` | list of contact information, will be published in the SAML metadata |
 | `metadata["local"]` | string[] | `[metadata/idp.xml]` | list of paths to metadata for all backing IdP's |
 
 
@@ -111,15 +113,31 @@ Keys in the Saml2BackendModulePlugin().config necessary to customize:
 | `encryption_key` | string | `2d96172b` | **TODO** |
 | `disco_srv` | string | `https://disco.example.com` | url to a discovery server where the end user can select their IdP |
 
-** TODO: does Ansible setup start a disco srv instance (hence removing the need to configure the url to it manually)?**
+** TODO: does Ansible setup and start a disco srv instance (hence removing the need to configure the url to it manually)?**
 ** TODO: must `publish_metadata` be configured at all?**
-
 ** TODO ** document "publish_metadata?"
 
 
-### OpenID Connect backend
-** TODO ** is there any special configuration necessary for Facebook/Google? or are they separate modules/plugins that should be documented?
+### Social login backends
 
+#### Google
+| Parameter name | Data type | Example value | Description |
+| -------------- | --------- | ------------- | ----------- |
+| `client_registration["client_id"]` | string | `abcdefgh` | client ID designated by Google |
+| `client_registration["client_secret"]` | string | `123456` | client secret designated by Google |
+| `state_id` | | | **TODO (same as `state_key` in FB plugin)?** |
+
+** TODO must `verify_ssl` be False for Google? **
+
+#### Facebook
+
+| Parameter name | Data type | Example value | Description |
+| -------------- | --------- | ------------- | ----------- |
+| `client_config["client_id"]` | string | `123456789` | "App ID" designated by Facebook |
+| `client_secret` | string | `a1b2c3d4e5` | "App Secret" designated by Facebook |
+| `state_key` | | | **TODO?** |
+
+** TODO: set sane defaults for `fields` in vopaas example/default FB config **
 
 
 # Service Provider requirements
