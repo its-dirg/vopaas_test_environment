@@ -1,17 +1,17 @@
 # Installation
 
 1. Download this repository as a [zip file](https://github.com/its-dirg/vopaas_ansible/archive/master.zip).
-1. All configuration files are located in **TODO: add skeleton configuration files somewhere in vopaas_ansible**
+1. All configuration files are located in **TODO add skeleton configuration files somewhere in vopaas_ansible**
 1. Modify all necessary parameters, described in [Configuration](configuration).
-1. Run `ansible-playbook` **TODO: specify command to run and describe example inventory?**
-1. **TODO: Should SP's/backing IdP's read from URL? (in that case we really should let a proper webserver (nginx or Apache) serve static files). Does `ansible` setup generate metadata, and if so where is it placed? or must it be done manually?**
+1. Run `ansible-playbook` **TODO specify command to run and describe example inventory?**
+1. **TODO Should SP's/backing IdP's read from URL? (in that case we really should let a proper webserver (nginx or Apache) serve static files). Does `ansible` setup generate metadata, and if so where is it placed? or must it be done manually?**
 
 
 # Configuration
 
 In this section all necessary configuration is described.
 
-** TODO change all example/default confiurations for VOPaaS to YAML **
+**TODO change all example/default configurations for VOPaaS to YAML**
 
 ## Proxy configuration
 
@@ -62,13 +62,13 @@ from SAML2 Service Providers (SP).
 
 #### IdP configuration
 
-**TODO** how is the final entity id computed/why does it contain seemingly random characters?
+**TODO how is the final entity id computed/why does it contain seemingly random characters?**
 
-**TODO** how should SP metadata be handled in production? can VOPaaS reload the specified metadata file at certain intervals or should we use MDX or something else?, see `metadata` param in table below
+**TODO how should SP metadata be handled in production? can VOPaaS reload the specified metadata file at certain intervals or should we use MDX or something else?, see `metadata` param in table below**
 
-**TODO** should there be any default "attribute_restrictions"?
-**TODO** is the default assertion lifetime reasonable?
-**TODO** contact information (organization, tech support, etc?) in configuration
+**TODO should there be any default "attribute_restrictions"?**
+**TODO is the default assertion lifetime reasonable?**
+**TODO contact information (organization, tech support, etc?) in configuration**
 
 Keys in the Saml2FrontendModulePlugin().idp_config necessary to customize:
 
@@ -84,14 +84,14 @@ Two backend plugins are bundled with the VOPaaS proxy:
   * SAML2 backend, making the proxy act as a SAML2 SP communicating with SAML2 IdP's.
   * OpenID Connect backend, making the proxy act as a OpenID Connect Relying Party (RP) communicating with OpenID Connect Providers (OP).
 
-** TODO ** is there any special configuration necessary for Facebook/Google?
+**TODO is there any special configuration necessary for Facebook/Google?**
 
 
 ### SAML2 backend
 
-** TODO ** does the SP really need key_/cert_file (will any of the backing IdP's expected signed requests?)
+**TOD does the SP really need key_/cert_file (will any of the backing IdP's expected signed requests?)**
 
-**TODO** how should IdP metadata be handled in production? can VOPaaS reload the specified metadata file at certain intervals or should we use MDX or something else?, see `metadata` param in table below
+**TODO how should IdP metadata be handled in production? can VOPaaS reload the specified metadata file at certain intervals or should we use MDX or something else?, see `metadata` param in table below**
 
 
 
@@ -113,9 +113,9 @@ Keys in the Saml2BackendModulePlugin().config necessary to customize:
 | `encryption_key` | string | `2d96172b` | **TODO** |
 | `disco_srv` | string | `https://disco.example.com` | url to a discovery server where the end user can select their IdP |
 
-** TODO: does Ansible setup and start a disco srv instance (hence removing the need to configure the url to it manually)?**
-** TODO: must `publish_metadata` be configured at all?**
-** TODO ** document "publish_metadata?"
+**TODO does Ansible setup and start a disco srv instance (hence removing the need to configure the url to it manually)?**
+**TODO must `publish_metadata` be configured at all?**
+**TODO document "publish_metadata?"**
 
 
 ### Social login backends
@@ -127,7 +127,7 @@ Keys in the Saml2BackendModulePlugin().config necessary to customize:
 | `client_registration["client_secret"]` | string | `123456` | client secret designated by Google |
 | `state_id` | | | **TODO (same as `state_key` in FB plugin)?** |
 
-** TODO must `verify_ssl` be False for Google? **
+**TODO must `verify_ssl` be False for Google?**
 
 #### Facebook
 
@@ -137,9 +137,9 @@ Keys in the Saml2BackendModulePlugin().config necessary to customize:
 | `client_secret` | string | `a1b2c3d4e5` | "App Secret" designated by Facebook |
 | `state_key` | | | **TODO?** |
 
-** TODO: set sane defaults for `fields` in vopaas example/default FB config **
+**TODO set sane defaults for `fields` in vopaas example/default FB config**
 
 
 # Service Provider requirements
 
-* Technical requirement: Any SP connecting to the proxy must provide an `mdui:DisplayName` in the metadata. **TODO: can we expect this or should we have a fallback when fetching the `requester_name` to send to the consent service?**
+* Technical requirement: Any SP connecting to the proxy must provide an `mdui:DisplayName` in the metadata. **TODO can we expect this or should we have a fallback when fetching the `requester_name` to send to the consent service?**
