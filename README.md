@@ -57,7 +57,7 @@ from SAML2 Service Providers (SP).
 
 #### IdP configuration
 
-**TODO how is the final entity id computed/why does it contain seemingly random characters?**
+**TODO how is the final entity id computed/why does it contain seemingly random characters? is it for SAML backend with multiple backing IdP's?**
 
 **TODO how should SP metadata be handled in production? can VOPaaS reload the specified metadata file at certain intervals or should we use MDX or something else?, see `metadata` param in table below**
 
@@ -90,27 +90,17 @@ Two backend plugins are bundled with the VOPaaS proxy:
 
 
 
-Keys in the Keys in the Saml2BackendModulePlugin().sp_config necessary to customize:
+SP configuration in `config[”config"]` necessary to customize:
 
 | Parameter name | Data type | Example value | Description |
 | -------------- | --------- | ------------- | ----------- |
-| `key_file` | string | `pki/backend.key` | path to private key used for signing the SAML authentication requests |
-| `cert_file` | string | `pki/backend.crt` | path to certificate for the public key associated with the private key in `key_file` |
 | `organization` | dict | `{display_name: Example Identities, name: Example Identities Organization, url: https://www.example.com}` | information about the organization, will be published in the SAML metadata |
 | `contact_person` | dict[] | `{contact_type: technical, given_name: Someone Technical, email_address: technical@example.com}` | list of contact information, will be published in the SAML metadata |
+| `key_file` | string | `pki/backend.key` | path to private key used for signing the SAML authentication requests |
+| `cert_file` | string | `pki/backend.crt` | path to certificate for the public key associated with the private key in `key_file` |
 | `metadata["local"]` | string[] | `[metadata/idp.xml]` | list of paths to metadata for all backing IdP's |
 
-
-Keys in the Saml2BackendModulePlugin().config necessary to customize:
-
-| Parameter name | Data type | Example value | Description |
-| -------------- | --------- | ------------- | ----------- |
-| `encryption_key` | string | `2d96172b` | **TODO** |
-| `disco_srv` | string | `https://disco.example.com` | url to a discovery server where the end user can select their IdP |
-
-**TODO does Ansible setup and start a disco srv instance (hence removing the need to configure the url to it manually)?**
-**TODO must `publish_metadata` be configured at all?**
-**TODO document "publish_metadata?"**
+**TODO what is `publish_metadata`?**
 
 
 ### Social login backends
