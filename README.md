@@ -53,12 +53,7 @@ proxy look as a SAML2 Identity Provider (IdP) accepting authentication requests
 from SAML2 Service Providers (SP).
 
 ### SAML2 frontend
-
-| Parameter name | Data type | Example value | Description |
-| -------------- | --------- | ------------- | ----------- |
-| `MODULE` | python module | `VOPaaSSamlFrontend` | python module backing the plugin |
-| `RECEIVER` | string | `VOPaaSSamlFrontend` | name of the frontend used as part of the path in the endpoints this frontend publishes |
-| `ENDPOINTS` | dict | `{single_sign_on_service: {saml2.BINDING_HTTP_REDIRECT: sso/redirect, saml2.BINDING_HTTP_POST: sso/post}}` | mapping of SAML2 request binding to url path |
+**TODO add path of example/default config file**
 
 #### IdP configuration
 
@@ -70,7 +65,7 @@ from SAML2 Service Providers (SP).
 **TODO is the default assertion lifetime reasonable?**
 **TODO contact information (organization, tech support, etc?) in configuration**
 
-Keys in the Saml2FrontendModulePlugin().idp_config necessary to customize:
+Keys in the `config["idp_config"]` necessary to customize:
 
 | Parameter name | Data type | Example value | Description |
 | -------------- | --------- | ------------- | ----------- |
