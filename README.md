@@ -4,14 +4,12 @@
 1. All configuration files are located in **TODO add skeleton configuration files somewhere in vopaas_ansible**
 1. Modify all necessary parameters, described in [Configuration](configuration).
 1. Run `ansible-playbook` **TODO specify command to run and describe example inventory?**
-1. **TODO Should SP's/backing IdP's read from URL? (in that case we really should let a proper webserver (nginx or Apache) serve static files). Does `ansible` setup generate metadata, and if so where is it placed? or must it be done manually?**
+1. **TODO Should SP's/backing IdP's read metadata from URL? (in that case we really should let a proper webserver (nginx or Apache) serve static files). Does `ansible` setup generate metadata, and if so where is it placed? or must it be done manually?**
 
 
 # Configuration
 
 In this section all necessary configuration is described.
-
-**TODO change all example/default configurations for VOPaaS to YAML**
 
 ## Proxy configuration
 
@@ -19,7 +17,7 @@ In this section all necessary configuration is described.
 | -------------- | --------- | ------------- | ----------- |
 | `HOST` | string | `127.0.0.1` | hostname or IP address |
 | `PORT` | int | `8080` | port number |
-| `HTTPS` | bool (Yes/No) | `No` | whether the proxy should use HTTPS |
+| `HTTPS` | bool | `No` | whether the proxy should use HTTPS |
 | `SERVER_CERT` | string | `/etc/ssl/cert.pem` | path to certificate for HTTPS, optional if `HTTPS: No` | 
 | `SERVER_KEY` | string | `/etc/ssl/key.pem` | path to private key for HTTPS cert, optional if `HTTPS: No` | 
 | `CERT_CHAIN` | string | `/etc/ssl/chain.pem` | path to certificate chain file for HTTPS cert, optional if `HTTPS: No`, and may be `Null` (for using with self-signed certificates in a development environment) |
@@ -99,8 +97,6 @@ SP configuration in `config[”config"]` necessary to customize:
 | `key_file` | string | `pki/backend.key` | path to private key used for signing the SAML authentication requests |
 | `cert_file` | string | `pki/backend.crt` | path to certificate for the public key associated with the private key in `key_file` |
 | `metadata["local"]` | string[] | `[metadata/idp.xml]` | list of paths to metadata for all backing IdP's |
-
-**TODO what is `publish_metadata`?**
 
 
 ### Social login backends
