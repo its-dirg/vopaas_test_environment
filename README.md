@@ -4,7 +4,8 @@
 1. All configuration files are located in **TODO add skeleton configuration files somewhere in vopaas_ansible**
 1. Modify all necessary parameters, described in [Configuration](configuration).
 1. Run `ansible-playbook` **TODO specify command to run and describe example inventory?**
-1. **TODO Should SP's/backing IdP's read metadata from URL? (in that case we really should let a proper webserver (nginx or Apache) serve static files). Does `ansible` setup generate metadata, and if so where is it placed? or must it be done manually?**
+1. **TODO Should SP's/backing IdP's read metadata from URL? (in that case we really should let a proper webserver (nginx or Apache) serve static files).
+1. **TODO specify location of generated frontend/backend metadata or make location configurable in Ansible**
 
 
 # Configuration
@@ -55,13 +56,11 @@ from SAML2 Service Providers (SP).
 
 #### IdP configuration
 
-**TODO how is the final entity id computed/why does it contain seemingly random characters? is it for SAML backend with multiple backing IdP's?**
-
 **TODO how should SP metadata be handled in production? can VOPaaS reload the specified metadata file at certain intervals or should we use MDX or something else?, see `metadata` param in table below**
 
 **TODO should there be any default "attribute_restrictions"?**
 **TODO is the default assertion lifetime reasonable?**
-**TODO contact information (organization, tech support, etc?) in configuration**
+**TODO document contact information (organization, tech support, etc?) in configuration**
 
 Keys in the `config["idp_config"]` necessary to customize:
 
@@ -77,12 +76,8 @@ Two backend plugins are bundled with the VOPaaS proxy:
   * SAML2 backend, making the proxy act as a SAML2 SP communicating with SAML2 IdP's.
   * OpenID Connect backend, making the proxy act as a OpenID Connect Relying Party (RP) communicating with OpenID Connect Providers (OP).
 
-**TODO is there any special configuration necessary for Facebook/Google?**
-
 
 ### SAML2 backend
-
-**TOD does the SP really need key_/cert_file (will any of the backing IdP's expected signed requests?)**
 
 **TODO how should IdP metadata be handled in production? can VOPaaS reload the specified metadata file at certain intervals or should we use MDX or something else?, see `metadata` param in table below**
 
@@ -108,8 +103,6 @@ SP configuration in `config[”config"]` necessary to customize:
 | `client_registration["client_secret"]` | string | `123456` | client secret designated by Google |
 | `state_id` | | | **TODO (same as `state_key` in FB plugin)?** |
 
-**TODO must `verify_ssl` be False for Google?**
-
 #### Facebook
 
 | Parameter name | Data type | Example value | Description |
@@ -119,7 +112,6 @@ SP configuration in `config[”config"]` necessary to customize:
 | `state_key` | | | **TODO?** |
 
 **TODO set sane defaults for `fields` in vopaas example/default FB config**
-
 
 # Service Provider requirements
 
