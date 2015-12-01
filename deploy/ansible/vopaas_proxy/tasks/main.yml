@@ -40,7 +40,7 @@
   git:
     repo=https://github.com/its-dirg/VOPaaS
     dest={{ vopaas_src_dir }}
-    version=21e9a4ecac72a0b10300bc79b518353e43786890
+    version=0e9160e98dfafa6fee6f72282907cdecf049db74
     force=yes
 
 - name: install requirements
