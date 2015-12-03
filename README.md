@@ -69,6 +69,7 @@ Keys in the `config["idp_config"]` necessary to customize:
 | `key_file` | string | `pki/frontend.key` | path to private key used for signing the SAML2 assertions |
 | `cert_file` | string | `pki/frontend.crt` | path to certificate for the public key associated with the private key in `key_file` |
 | `metadata["local"]` | string[] | `[metadata/sp.xml]` | list of paths to metadata for all service providers connecting to the proxy |
+| `state_id` | string | `my_saml_frontend` | key for saving/retrieving data from state dict. Need to be unique per frontend/backend |
 
 ## Backend configuration
 
@@ -92,6 +93,7 @@ SP configuration in `config[”config"]` necessary to customize:
 | `key_file` | string | `pki/backend.key` | path to private key used for signing the SAML authentication requests |
 | `cert_file` | string | `pki/backend.crt` | path to certificate for the public key associated with the private key in `key_file` |
 | `metadata["local"]` | string[] | `[metadata/idp.xml]` | list of paths to metadata for all backing IdP's |
+| `state_id` | string | `my_saml_backend` | key for saving/retrieving data from state dict. Need to be unique per frontend/backend |
 
 
 ### Social login backends
