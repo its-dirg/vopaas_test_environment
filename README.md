@@ -177,11 +177,11 @@ Generating metadata for the proxy is done in two steps. The order does not matte
 * Generating metadata for all saml2 based backend modules.
 * Generating metadata for all proxy frontend endpoints.
 
-Using the script with flag **make_saml_metadata.py -b <proxy_config>** will generate separate 
+Using the script with flag **make_saml_metadata.py -b \<proxy_config_path\>** will generate separate 
 metadata files for all the saml2 based backend modules specified in the proxy_config file.
 
-The script **make_vopaas_metadata.py <proxy_config>** will generate metadata files for the proxy 
-frontend. Each file represents one of the target IDP/OP and contains some gui information about the
-original IDP/OP.
+The script **make_vopaas_metadata.py \<proxy_config_path\>** will generate metadata files for the 
+proxy frontend. Each file represents one of the target IDP/OP and contains some gui information 
+about the original IDP/OP.
 In the case of IDP, the gui information is retrieved from the IDPs original metadata. For OP, the
 information is manually added in the openid backend configuration and is retrieved by the script.
