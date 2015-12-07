@@ -76,12 +76,12 @@ In this section all necessary configuration is described.
 | `CERT_CHAIN` | string | `/etc/ssl/chain.pem` | path to certificate chain file for HTTPS cert, optional if `HTTPS: No`, and may be `Null` (for using with self-signed certificates in a development environment) |
 | `SESSION_OPTS` | dict | `{session.type: memory, session.cookie_expires: Yes, session.auto: Yes}` | configuration options for [Beaker Session Middleware](http://beaker.readthedocs.org/en/latest/configuration.html)
 | `COOKIE_STATE_NAME` | string | `vopaas_state` | name of cooke VOPaaS uses for preserving state between requests |
-| `STATE_ENCRYPTION_KEY` | string | `52fddd3528a44157` | key used for encrypting the state cookie |
+| `STATE_ENCRYPTION_KEY` | string | `52fddd3528a44157` | key used for encrypting the state cookie, will be overriden by the environment variable `SATOSA_STATE_ENCRYPTION_KEY` if it is set |
 | `INTERNAL_ATTRIBUTES` | string | `example/internal_attributes.yaml` | path to attribute mapping
 | `PLUGIN_PATH` | string[] | `[example/plugins/backends, example/plugins/frontends]` | list of directory paths containing any front-/backend plugins |
 | `BACKEND_MODULES` | string[] | `[oidc_backend, saml2_backend]` | list of plugin names to load from the directories in `PLUGIN_PATH` |
 | `FRONTEND_MODULES` | string[] | `[saml2_frontend]` | list of plugin names to load from the directories in `PLUGIN_PATH` |
-| `USER_ID_HASH_SALT` | string | `61a89d2db0b9e1e2` | salt used when creating the persistent user identifier |
+| `USER_ID_HASH_SALT` | string | `61a89d2db0b9e1e2` | salt used when creating the persistent user identifier, will be overriden by the environment variable `SATOSA_USER_ID_HASH_SALT` if it is set |
 | `CONSENT` | dict | see configuration of [Additional Services](#additional-services) | optional configuration of consent service |
 | `ACCOUNT_LINKING` | dict | see configuration of [Additional Services](#additional-services) | optional configuration of account linking service |
 
@@ -167,10 +167,28 @@ SP configuration in `config[”config"]` necessary to customize:
 
 **TODO set sane defaults for `fields` in vopaas example/default FB config**
 
+* Technical requirement: Any SP connecting to the proxy must provide an `mdui:DisplayName` in the metadata. **TODO can we expect this or should we have a fallback when fetching the `requester_name` to send to the consent service?**
+
+# Generating metadata
+
+Generating metadata for the proxy is done in two steps. The order does not matter. 
+* Generating metadata for all saml2 based backend modules.
+* Generating metadata for all proxy frontend endpoints.
+
+Using the script with flag **make_saml_metadata.py -b \<proxy_config_path\>** will generate separate 
+metadata files for all the saml2 based backend modules specified in the proxy_config file.
+
+The script **make_vopaas_metadata.py \<proxy_config_path\>** will generate metadata files for the 
+proxy frontend. Each file represents one of the target IDP/OP and contains some gui information 
+about the original IDP/OP.
+In the case of IDP, the gui information is retrieved from the IDPs original metadata. For OP, the
+information is manually added in the openid backend configuration and is retrieved by the script.
+
 # Internal attributes
 
-## attributes
 This is a map of how to convert external attributes to an internal representation. 
+
+## attributes
 The values directly under the attributes element are the internal representation. 
 Every internal attribute has a map of profiles, which is turn has a list of external attributes which 
 should be mapped to the internal attribute. 
