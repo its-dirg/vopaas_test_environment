@@ -178,10 +178,74 @@ Generating metadata for the proxy is done in two steps. The order does not matte
 * Generating metadata for all proxy frontend endpoints.
 
 Using the script with flag **make_saml_metadata.py -b \<proxy_config_path\>** will generate separate 
-metadata files for all the saml2 based backend modules specified in the proxy_config file.
+metadata files for each saml2 based backend modules specified in the proxy_config file.
 
 The script **make_vopaas_metadata.py \<proxy_config_path\>** will generate metadata files for the 
 proxy frontend. Each file represents one of the target IDP/OP and contains some gui information 
 about the original IDP/OP.
 In the case of IDP, the gui information is retrieved from the IDPs original metadata. For OP, the
 information is manually added in the openid backend configuration and is retrieved by the script.
+
+# State
+
+The SATOSA proxy uses secure cookies to save state. Through a complete flow the state will at some 
+time contain/have contained the information presented below. 
+
+## Frontends
+
+### VOPaaSSamlFrontend
+
+* **proxy_idp_entityid**: Which entity id the proxy will answer as, when sending the authentication 
+response back to the calling SP.
+* **relay_state**: The relay state given by the SP request
+* **resp_args.in_response_to**: The id of the request
+* **resp_args.binding**: Which binding type to use
+* **resp_args.sp_entity_id**: Entity id of the calling SP
+* **resp_args.name_id_policy**: The SAML2 name id policy
+
+## Backends
+
+### VOPaaSSamlBackend
+
+Only saves the relay state for the backend-IDP request.
+
+### VOPaaSOpenIdBackend
+TODO
+
+### VOPaaSOFacebookBackend
+TODO
+
+## SATOSA proxy
+
+* **SESSION_ID**: This is a session id given by the satosa proxy
+* **SATOSA_REQUESTOR**: Id of the requestor who called the proxy
+* **IDHASHER.hash_type**: Which id type the requestor is asking for (persistent/transient/...)
+* **ROUTER**: Which frontend module that should answer the requestor
+
+### Consent module
+
+If the consent is enabled, the consent module will save the following:
+ 
+* **CONSENT.internal_resp.to**: To who the response should go (requestor id)
+* **CONSENT.internal_resp.auth_info.timestamp**: When the authentication was done
+* **CONSENT.internal_resp.auth_info.auth_class_ref**: Description of how the authentication was determined
+* **CONSENT.internal_resp.issuer**: Id of the identity provider
+* **CONSENT.internal_resp.hash_type**: Which id type the requestor is asking for (persistent/transient/...)  
+* **CONSENT.internal_resp.usr_id**: The id of the authenticated user
+* **CONSENT.internal_resp.attr**: Contains all attributes and values given by the authentication
+* **CONSENT.internal_resp.usr_id_attr**: An empty list
+* **CONSENT.filter**: A list of all possible attributes that can be sent to the requestor
+* **CONSENT.requester_name**: The name of the requestor
+
+### Account linking module
+
+If the account linking is enabled, the account linking module will save the following:
+
+* **ACCOUNT_LINKING.to**: To who the response should go (requestor id)
+* **ACCOUNT_LINKING.auth_info.timestamp**: When the authentication was done
+* **ACCOUNT_LINKING.auth_class_ref**: Description of how the authentication was determined
+* **ACCOUNT_LINKING.issuer**: Id of the identity provider 
+* **ACCOUNT_LINKING.usr_id**: The id of the authenticated user
+* **ACCOUNT_LINKING.attr**: Contains all attributes and values given by the authentication
+* **ACCOUNT_LINKING.usr_id_attr**: An empty list
+
