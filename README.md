@@ -253,8 +253,8 @@ frontend module.
 
 # State
 
-The SATOSA proxy uses secure cookies to save state. Through a complete flow the state will at some 
-time contain/have contained the information presented below. 
+The SATOSA proxy uses secure cookies to save state. The state is encrypted using an AES-256 cipher with CBC mode and a random IV.
+Through a complete flow, the state will at some point contain/have contained the information presented below. 
 
 ## Frontends
 
