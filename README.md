@@ -147,6 +147,35 @@ SP configuration in `config[”config"]` necessary to customize:
 | `metadata["local"]` | string[] | `[metadata/idp.xml]` | list of paths to metadata for all backing IdP's |
 | `state_id` | string | `my_saml_backend` | key for saving/retrieving data from state dict. Need to be unique per frontend/backend |
 
+For more detailed information on how you could customize the SP configuration please visit: 
+https://dirg.org.umu.se/static/pysaml2/howto/config.html
+
+#### Metadata
+The metadata could be loaded in multiple ways in the table above it's loaded from a static 
+file by using the key "local". It's also possible to load read the metadata from a remote URL.
+The last way to load metadata is by using a discovery server, but could not be used in VOPaaS proxy.
+
+**Examples:**
+
+Metadata from local file:
+
+    "metadata": {
+        "local": ["/home/idp/example.xml"],
+    }
+
+Metadata from remote URL:
+
+    "metadata": {
+        "remote": [
+            {
+                "url":"https://kalmar2.org/simplesaml/module.php/aggregator/?id=kalmarcentral2&set=saml2",
+                "cert":None
+            }],
+    }
+
+Metadata from discovery server:
+
+    disco_srv: "http://localhost:8080/role/idp.ds"
 
 ### Social login backends
 
@@ -169,20 +198,61 @@ SP configuration in `config[”config"]` necessary to customize:
 
 * Technical requirement: Any SP connecting to the proxy must provide an `mdui:DisplayName` in the metadata. **TODO can we expect this or should we have a fallback when fetching the `requester_name` to send to the consent service?**
 
-# Generating metadata
+# Metadata
 
 Generating metadata for the proxy is done in two steps. The order does not matter. 
 * Generating metadata for all saml2 based backend modules.
 * Generating metadata for all proxy frontend endpoints.
 
+## Generate backend metadata
 Using the script with flag **make_saml_metadata.py -b \<proxy_config_path\>** will generate separate 
 metadata files for all the saml2 based backend modules specified in the proxy_config file.
 
+### Arguments to script:
+positional arguments:
+  
+    proxy_config_path
+
+optional arguments:
+
+    -h, --help  show this help message and exit
+    -v VALID    How long, in days, the metadata is valid from the time of
+              creation
+    -c CERT     certificate
+    -i ID       The ID of the entities descriptor
+    -k KEYFILE  A file with a key to sign the metadata with
+    -n NAME
+    -s          sign the metadata
+    -x XMLSEC   xmlsec binaries to be used for the signing
+    -f          generate frontend metadata
+    -b          generate backend metadata
+    -o OUTPUT   output path
+
+
+## Generate proxy frontend metadata
 The script **make_vopaas_metadata.py \<proxy_config_path\>** will generate metadata files for the 
 proxy frontend. Each file represents one of the target IDP/OP and contains some gui information 
 about the original IDP/OP.
 In the case of IDP, the gui information is retrieved from the IDPs original metadata. For OP, the
 information is manually added in the openid backend configuration and is retrieved by the script.
+
+### Arguments to script:
+positional arguments:
+
+    proxy_config_path
+
+optional arguments:
+
+    -h, --help  show this help message and exit
+    -v VALID    How long, in days, the metadata is valid from the time of
+              creation
+    -c CERT     certificate
+    -i ID       The ID of the entities descriptor
+    -k KEYFILE  A file with a key to sign the metadata with
+    -n NAME
+    -s          sign the metadata
+    -x XMLSEC   xmlsec binaries to be used for the signing
+    -o OUTPUT   Where to write metadata files
 
 # Internal attributes
 
