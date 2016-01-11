@@ -54,13 +54,13 @@ service provider and for which the user has given consent will be sent to the SP
 
 1. Download this repository as a [zip file](https://github.com/its-dirg/vopaas_ansible/archive/master.zip).
 1. All configuration files are located in **TODO add skeleton configuration files somewhere in vopaas_ansible**
-1. Modify all necessary parameters, described in [Configuration](configuration).
+1. Modify all necessary parameters, described in [Configuration](#configuration).
 1. Run `ansible-playbook` **TODO specify command to run and describe example inventory?**
 1. **TODO Should SP's/backing IdP's read metadata from URL? (in that case we really should let a proper webserver (nginx or Apache) serve static files).
 1. **TODO specify location of generated frontend/backend metadata or make location configurable in Ansible**
 
 
-# Configuration
+# <a name="configuration">Configuration</a>
 
 In this section all necessary configuration is described.
 
@@ -170,7 +170,8 @@ Metadata from remote URL:
             {
                 "url":"https://kalmar2.org/simplesaml/module.php/aggregator/?id=kalmarcentral2&set=saml2",
                 "cert":None
-            }],
+            }
+        ],
     }
 
 Metadata from discovery server:
