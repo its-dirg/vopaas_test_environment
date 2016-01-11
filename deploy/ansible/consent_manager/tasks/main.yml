@@ -2,7 +2,7 @@
   git:
     repo=https://github.com/its-dirg/CMservice
     dest={{ cm_dir }}
-    version=b335ac22bcad5010568e39916d8ee2cc5955316a
+    version=c80f908e87a5f7ed1cf407e5252d2307d185143d
     force=yes
 
 - name: Overwrite cm config
@@ -13,9 +13,9 @@
 - name: Add public sign key
   copy: src=certs/vopaas_cm.pub dest={{ cm_dir }}/server/keys/sign_key.pub
 
-- name: install requirements
-  command:
-    pip3 install -r {{ cm_dir }}/requirements.txt
+#- name: install requirements
+#  command:
+#    pip3 install -r {{ cm_dir }}/requirements.txt
 
 - name: install CM from local project
   command:

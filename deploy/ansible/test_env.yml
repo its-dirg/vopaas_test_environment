@@ -6,7 +6,7 @@
     pyoidc_dir: "{{ home_dir }}/pyoidc"
     op_dir: "{{ pyoidc_dir }}/oidc_example/op2"
     vopaas_dir: "{{ home_dir }}/vopaas"
-    proxy_dir: "{{ vopaas_dir }}/example"
+    vopaas_src_dir: "{{ vopaas_dir }}/src"
     pysaml2_dir: "{{ home_dir }}/pysaml2"
     sp_dir: "{{ pysaml2_dir }}/example/sp-wsgi"
     idp_dir: "{{ pysaml2_dir }}/example/idp2"
@@ -18,6 +18,8 @@
     metadata_dir_idp2: "{{ metadata_static_dir }}/idp2.xml"
     cm_dir: "{{ home_dir }}/CMservice"
     cm_server_dir: "{{ cm_dir }}/server"
+    al_dir: "{{ home_dir }}/ALService"
+    al_server_dir: "{{ al_dir }}/server"
 
     hostname: "127.0.0.1"
     host: "http://{{ hostname }}"
@@ -28,9 +30,11 @@
     sp_port: "9087"
     op_port: "9086"
     cm_port: "9085"
+    al_port: "9084"
 
     pyff_discovery_url: "{{ host }}:{{ pyff_port }}"
     cm_url: "https://{{ hostname }}:{{ cm_port }}"
+    al_url: "https://{{ hostname }}:{{ al_port }}"
     op_url: "https://{{ hostname }}"
 
   pre_tasks:
@@ -75,6 +79,7 @@
     - {role: op, sudo: yes}
     - {role: vopaas_proxy, sudo: yes}
     - {role: consent_manager, sudo: yes}
+    - {role: account_linking, sudo: yes}
     - {role: metadata, sudo: yes}
     - {role: startup, sudo: yes}
-    - {role: integration_test, sudo: yes}
+#    - {role: integration_test, sudo: yes}
