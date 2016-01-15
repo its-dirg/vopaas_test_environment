@@ -8,10 +8,6 @@
     - "{{ vopaas_dir }}/plugins/frontends"
     - "{{ vopaas_dir }}/plugins/backends"
 
-#- name: create directory for proxy
-#  file: path={{ vopaas_dir }} state=directory owner=vagrant group=vagrant mode=0755
-#- name: create directory for server certs
-#  file: path={{ proxy_cert_server_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy server cert
   copy: src=certs/proxy_server.crt dest={{ proxy_server_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy server private key
@@ -19,19 +15,18 @@
 - name: copy signing private key
   copy: src=certs/vopaas_cm.key dest={{ proxy_server_sign_key }} owner=vagrant group=vagrant mode=0755
 
-#- name: create directory for frontend certs
-#  file: path={{ proxy_cert_frontend_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy frontend cert
   copy: src=certs/proxy_frontend.crt dest={{ proxy_frontend_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy frontend private key
   copy: src=certs/proxy_frontend.key dest={{ proxy_frontend_key }} owner=vagrant group=vagrant mode=0755
 
-#- name: create directory for backend certs
-#  file: path={{ proxy_cert_backend_dir }} state=directory owner=vagrant group=vagrant mode=0755
 - name: copy backend cert
   copy: src=certs/proxy_backend.crt dest={{ proxy_backend_cert }} owner=vagrant group=vagrant mode=0755
 - name: copy backend private key
   copy: src=certs/proxy_backend.key dest={{ proxy_backend_key }} owner=vagrant group=vagrant mode=0755
+
+- name: copy statistics private key
+  copy: src=certs/vopaas_stat.key dest={{ proxy_statistics_key }} owner=vagrant group=vagrant mode=0755
 
 
 
@@ -40,7 +35,7 @@
   git:
     repo=https://github.com/its-dirg/VOPaaS
     dest={{ vopaas_src_dir }}
-    version=07c42f674dcb05fd7a62de764e8825617d0826a4
+    version=5d96c0011a7f155645636a8b2fea3dd62018a46b
     force=yes
 
 - name: install requirements
@@ -59,10 +54,6 @@
   command:
     pip3 install PyYAML
 
-#- name: install pysaml
-#  command:
-#    pip3 install git+https://github.com/rohe/pysaml2
-
 - name: Overwrite internal_attributes.yaml
   template:
     src=internal_attributes.yaml.j2
@@ -73,34 +64,28 @@
     src=proxy_conf.yaml.j2
     dest={{ vopaas_dir }}/proxy_conf.yaml
 
-- name: Overwrite saml2_backend.py
+- name: Overwrite saml2_backend.yaml
   template:
-    src=saml2_backend.py.j2
-    dest={{ vopaas_dir }}/plugins/backends/saml2_backend.py
+    src=saml2_backend.yaml.j2
+    dest={{ vopaas_dir }}/plugins/backends/saml2_backend.yaml
 
-- name: Overwrite saml2_frontend.py
+- name: Overwrite saml2_frontend.yaml
   template:
-    src=saml2_frontend.py.j2
-    dest={{ vopaas_dir }}/plugins/frontends/saml2_frontend.py
+    src=saml2_frontend.yaml.j2
+    dest={{ vopaas_dir }}/plugins/frontends/saml2_frontend.yaml
+
+- name: Creates "micro_services" directory
+  file: path={{ vopaas_dir }}/plugins/micro_services state=directory
+
+- name: Overwrite statistics_service.yaml
+  template:
+    src=statistics_service.yaml.j2
+    dest={{ vopaas_dir }}/plugins/micro_services/statistics_service.yaml
 
 - name: Overwrite op backend
   template:
-    src=oidc_backend.py.j2
-    dest={{ vopaas_dir }}/plugins/backends/oidc_backend.py
-
-#- name: Overwrite facebook backend
-#  template:
-#    src=fb_backend.py.j2
-#    dest={{ vopaas_dir }}/plugins/backends/fb_backend.py
-#
-#- name: Overwrite google backend
-#  template:
-#    src=google_backend.py.j2
-#    dest={{ vopaas_dir }}/plugins/backends/google_backend.py
-
-#- name: install example requirements
-#  command:
-#    pip3 install -r {{ vopaas_src_dir }}/requirements.txt
+    src=openid_backend.yaml.j2
+    dest={{ vopaas_dir }}/plugins/backends/openid_backend.yaml
 
 - name: install vopaas from local project
   command:

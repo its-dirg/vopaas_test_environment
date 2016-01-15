@@ -2,7 +2,7 @@
   git:
     repo=https://github.com/its-dirg/ALservice
     dest={{ al_dir }}
-    version=502b31a4bd7c0af68236e6bd9bc81a362a4f75f8
+    version=8d7406410fb04b647edca9f05bc0f654865e1183
     force=yes
 
 - name: Overwrite al config

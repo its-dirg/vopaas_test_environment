@@ -13,6 +13,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 9086, host: 9086
   config.vm.network "forwarded_port", guest: 9085, host: 9085
   config.vm.network "forwarded_port", guest: 9084, host: 9084
+  config.vm.network "forwarded_port", guest: 9083, host: 9083
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "deploy/ansible/test_env.yml"

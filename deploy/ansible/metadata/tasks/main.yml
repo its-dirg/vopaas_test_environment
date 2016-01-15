@@ -32,11 +32,11 @@
 
 - name: Generate proxy backend metadata
   shell:
-    make_saml_metadata.py -b -o {{ pyff_metadata_dir }} proxy_conf.yaml
+    make_satosa_saml_metadata.py -b -o {{ pyff_metadata_dir }} proxy_conf.yaml
     chdir={{ vopaas_dir }}
 
-- name: Generate proxy backend metadata
+- name: Generate proxy frontend metadata
   shell:
-    make_vopaas_metadata.py -o {{ pyff_metadata_dir }} proxy_conf.yaml
+    make_satosa_saml_metadata.py -o {{ pyff_metadata_dir }} proxy_conf.yaml
     chdir={{ vopaas_dir }}
 

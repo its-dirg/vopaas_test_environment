@@ -1,20 +1,21 @@
 #--- SATOSA Config ---#
-HOST: "{{ hostname }}"
-PORT: {{ proxy_port }}
-HTTPS: Yes
-INTERNAL_ATTRIBUTES: 'internal_attributes.yaml'
+BASE: https://{{ hostname }}:{{ proxy_port }}
+INTERNAL_ATTRIBUTES: "internal_attributes.yaml"
 COOKIE_STATE_NAME: "VOPAAS_STATE"
 STATE_ENCRYPTION_KEY: "asdASD123"
 PLUGIN_PATH:
   - "plugins/backends"
   - "plugins/frontends"
+  - "plugins/micro_services"
 BACKEND_MODULES:
   - "saml2_backend"
-  - "oidc_backend"
+  - "openid_backend"
 #  - "google_backend"
 #  - "fb_backend"
 FRONTEND_MODULES:
   - "saml2_frontend"
+MICRO_SERVICES:
+  - "statistics_service"
 USER_ID_HASH_SALT: "61a89d2db0b9e1e27d490d050b478fe71f352fddd3528a44157f43e339c6c62d96172bf84233317"
 CONSENT:
   enable: Yes
@@ -22,25 +23,40 @@ CONSENT:
   redirect: "{{ cm_url }}/consent"
   endpoint: "handle_consent"
   sign_key: "{{ proxy_server_sign_key }}"
+  state_enc_key: "7D1ZGckfoiQfxvsK3DLCQFGutA6KM0ZzoSnzB"
   verify_ssl: No
 ACCOUNT_LINKING:
   enable: Yes
   rest_uri: "{{ al_url }}"
   redirect: "{{ al_url }}/approve"
   endpoint: "handle_account_linking"
-  sign_key: "pki/account_linking.key"
+  sign_key: "{{ proxy_server_sign_key }}"
   verify_ssl: No
-
-#--- Server Config ---#
-SERVER_CERT: "{{ proxy_server_cert }}"
-SERVER_KEY: "{{ proxy_server_key }}"
-CERT_CHAIN: Null
-STATIC_DIR: "/static"
-LOG_FILE: "server.log"
-
-# Beaker session configuration
-# This session can be configured to use database, file, or memory
-SESSION_OPTS:
-    session.type: "memory"
-    session.cookie_expires: Yes  # Expire when the session is closed
-    session.auto: Yes
+LOGGING:
+  version: 1
+  formatters:
+    simple:
+      format: "[%(asctime)-19.19s] [%(levelname)-5.5s]: %(message)s"
+  handlers:
+    info_file_handler:
+      class: logging.handlers.RotatingFileHandler
+      level: INFO
+      formatter: simple
+      filename: info.log
+      maxBytes: 10485760 # 10MB
+      backupCount: 20
+      encoding: utf8
+    satosa_file_handler:
+      class: logging.FileHandler
+      level: DEBUG
+      formatter: simple
+      filename: satosa.log
+      encoding: utf8
+  loggers:
+    satosa:
+      level: DEBUG
+      handlers: [satosa_file_handler]
+      propagate: no
+  root:
+    level: INFO
+    handlers: [info_file_handler]

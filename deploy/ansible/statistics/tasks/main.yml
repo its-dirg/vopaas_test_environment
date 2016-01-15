@@ -1,0 +1,27 @@
+- name: fetch vopaas_statistics from github
+  git:
+    repo=https://github.com/its-dirg/vopaas_statistics
+    dest={{ statistics_dir }}
+    version=0b5feff14d1611ff0ccc05bddf350428c7066915
+    force=yes
+
+- name: Overwrite cm config
+  template:
+    src=settings.cfg.j2
+    dest={{ statistics_dir }}/server/settings.cfg
+
+- name: Creates "keys" directory
+  file: path={{ statistics_dir }}/server/keys state=directory
+
+- name: Add public sign key
+  copy: src=certs/vopaas_stat.pub dest={{ statistics_dir }}/server/keys/vopaas_stat.pub
+
+- name: install vopaas_statistics from local project
+  command:
+    pip3 install -e .
+    chdir={{ statistics_dir }}
+
+- name: Create translation files for statistics_dir
+  shell:
+    ./3_add_translations.sh
+    chdir={{ statistics_server_dir }}

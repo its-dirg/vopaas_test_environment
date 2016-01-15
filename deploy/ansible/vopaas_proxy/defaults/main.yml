@@ -10,3 +10,5 @@ proxy_frontend_key: "{{ proxy_cert_frontend_dir }}/proxy_frontend.key"
 proxy_cert_backend_dir: "{{ cert_dir }}/backend"
 proxy_backend_cert: "{{ proxy_cert_backend_dir }}/proxy_backend.crt"
 proxy_backend_key: "{{ proxy_cert_backend_dir }}/proxy_backend.key"
+
+proxy_statistics_key: "{{ proxy_cert_server_dir }}/proxy_statistics.key"

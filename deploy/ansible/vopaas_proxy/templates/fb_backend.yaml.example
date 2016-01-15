@@ -1,0 +1,42 @@
+google_backend.yaml.examplemodule: satosa.backends.oauth.FacebookBackend
+plugin: BackendModulePlugin
+name: facebook
+config:
+  authz_page: <name>
+  base_url: <base_url>
+  client_config: {client_id: ''}
+  client_secret:
+  fields: [id, name, first_name, last_name, middle_name, picture, email, verified,
+    gender, timezone, locale, updated_time]
+  response_type: code
+  server_info: {authorization_endpoint: 'https://www.facebook.com/dialog/oauth', token_endpoint: 'https://graph.facebook.com/v2.5/oauth/access_token'}
+  state_id: <name>
+  verify_accesstoken_state: false
+  op_info:
+    organization:
+      display_name:
+      - ["OP Facebook Identities", "en"]
+      name:
+      - ["En facebook test-OP", "en"]
+      url:
+      - ["https://www.facebook.com/", "en"]
+    ui_info:
+      description:
+      - ["This is a facebook test OP", "en"]
+      display_name:
+      - ["OP - FACEBOOK - TEST", "en"]
+      logo:
+      - image: "data:image/png;base64,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"
+        width: "120"
+        height: "60"
+        lang: "en"
+
+    contact_person:
+      - contact_type: "technical"
+        given_name: "Test"
+        sur_name: "FACEBOOK"
+        email_address: ["technical_test@example.com", "support_test@example.com"]
+      - contact_type: "support"
+        given_name: "Support"
+        email_address: ["support@example.com"]
+

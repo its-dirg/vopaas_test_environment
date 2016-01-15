@@ -29,11 +29,11 @@
     pip3 install -e .
     chdir={{ home_dir }}/jwkest
 
-#- name: install requirements
-#  shell:
-#    pip3 install -r {{ pyoidc_dir }}/requirements.txt
+- name: install cherrypy
+  command:
+    pip3 install cherrypy
 
-- name: install pysaml2 from local project
+- name: install pyoidc from local project
   command:
     pip3 install -e .
     chdir={{ pyoidc_dir }}

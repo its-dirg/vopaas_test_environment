@@ -1,0 +1,14 @@
+SSL=False
+SERVER_CERT="./keys/server.crt"
+SERVER_KEY="./keys/server.key"
+JWT_PUB_KEY= ["{{ statistics_dir }}/server/keys/vopaas_stat.pub"]
+SECRET_SESSION_KEY="fdwqQ"#€%rgsdJKYIU89yhio34tjg)=(v90umjcdASDf="
+PORT={{ statistics_port }}
+HOST="0.0.0.0"
+DEBUG=False
+BABEL_DEFAULT_LOCALE='en'
+SALT="aNDdsfj90?`=1MHH23mcASDa#Q()öldk0"
+DATABASE_CLASS_PATH="vopaas_statistics.db.StatSQLiteDatabase"
+DATABASE_CLASS_PARAMETERS=["test.db"]
+LOG_FILE="server.log"
+LOG_LEVEL="WARNING"

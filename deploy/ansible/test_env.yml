@@ -20,6 +20,8 @@
     cm_server_dir: "{{ cm_dir }}/server"
     al_dir: "{{ home_dir }}/ALService"
     al_server_dir: "{{ al_dir }}/server"
+    statistics_dir: "{{ home_dir }}/vopaas_statistics"
+    statistics_server_dir: "{{ statistics_dir }}/server"
 
     hostname: "127.0.0.1"
     host: "http://{{ hostname }}"
@@ -31,10 +33,12 @@
     op_port: "9086"
     cm_port: "9085"
     al_port: "9084"
+    statistics_port: "9083"
 
     pyff_discovery_url: "{{ host }}:{{ pyff_port }}"
     cm_url: "https://{{ hostname }}:{{ cm_port }}"
     al_url: "https://{{ hostname }}:{{ al_port }}"
+    statistics_url: "http://{{ hostname }}:{{ statistics_port }}"
     op_url: "https://{{ hostname }}"
 
   pre_tasks:
@@ -80,6 +84,7 @@
     - {role: vopaas_proxy, sudo: yes}
     - {role: consent_manager, sudo: yes}
     - {role: account_linking, sudo: yes}
+    - {role: statistics, sudo: yes}
     - {role: metadata, sudo: yes}
     - {role: startup, sudo: yes}
 #    - {role: integration_test, sudo: yes}

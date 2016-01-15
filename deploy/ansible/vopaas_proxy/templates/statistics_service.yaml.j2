@@ -1,0 +1,6 @@
+module: vopaas.micro_service.statistics_service.StatisticsService
+plugin: ResponseMicroService
+config:
+  rest_uri: "{{statistics_url}}"
+  signing_key: "{{ proxy_statistics_key }}"
+  verify_ssl: No
