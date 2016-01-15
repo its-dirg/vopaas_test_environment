@@ -69,9 +69,9 @@
       sudo: Yes
     - name: fetch pysaml2 from github
       git:
-        repo=https://github.com/its-dirg/pysaml2
+        repo=https://github.com/rohe/pysaml2
         dest={{ pysaml2_dir }}
-        version=5a9b74bb8bdc3e24ab77c9397a6fa9a0a74595e4
+        version=01e0fafe855280ed164789748411486a7f796a70
         force=yes
       sudo: Yes
 
