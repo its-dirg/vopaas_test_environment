@@ -41,6 +41,8 @@
     statistics_url: "http://{{ hostname }}:{{ statistics_port }}"
     op_url: "https://{{ hostname }}"
 
+    idp2_entity_id: "http://{{ hostname }}:{{ idp_2_port }}/idp2.xml"
+
   pre_tasks:
     - name: create directory for certs
       file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755

@@ -27,6 +27,11 @@ config:
         subject_data: ./idp.subject
         want_authn_requests_signed: false
     xmlsec_binary: /usr/bin/xmlsec1
+
+  acr_mapping:
+    "": http://eidas.europa.eu/LoA/low
+    "{{ idp2_entity_id }}" : http://eidas.europa.eu/LoA/high
+
   state_id: <name>
   base: <base_url>
   endpoints:
