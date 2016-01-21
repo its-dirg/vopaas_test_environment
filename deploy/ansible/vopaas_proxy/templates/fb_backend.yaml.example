@@ -1,4 +1,4 @@
-google_backend.yaml.examplemodule: satosa.backends.oauth.FacebookBackend
+module: satosa.backends.oauth.FacebookBackend
 plugin: BackendModulePlugin
 name: facebook
 config:
