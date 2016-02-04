@@ -46,6 +46,7 @@
   pre_tasks:
     - name: create directory for certs
       file: path={{ cert_dir }} state=directory owner=vagrant group=vagrant mode=0755
+      sudo: Yes
     - name: install apt pkg
       apt: pkg={{ item }} state=present update_cache=yes
       with_items:
