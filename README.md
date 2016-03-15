@@ -1,5 +1,5 @@
-VOPaaS is a light weight proxy used as a bridge between a SAML2int Service Provider and a number of 
-identity providers such as Facebook, google and SAML2int based IdP's.
+Vagrant test environment for testing the integration of VOPaaS. The test environment is provisioned
+by Ansible scipts
 
 # Architectural overview
 
